@@ -1,0 +1,377 @@
+<style type="less">
+  page{
+    width:100%;
+    height:100%;
+    background-color:#f3f3f3;
+  }
+  /*update by lisa in 2018/4/11*/
+  .update-code{
+    width:100%;
+    height:auto;
+    padding:0 20rpx;
+    box-sizing:border-box;
+  }
+  .foods-detail-img{
+    display:block;
+    width:100%;
+    height:450rpx;
+  }
+  .foods-detail-img-desc-wrap{
+    width:710rpx;
+    height:164rpx;
+    background-color:#fff;
+    margin:0 auto;
+    padding:40rpx;
+    box-sizing:border-box;
+    .detail-img-desc-title{
+      color:#333;
+      font-size:32rpx;
+    }
+    .price-wrap{
+      width:100%;
+      height:44rpx;
+      /*background-color:cyan;*/
+      margin-top:14rpx;
+      .price{
+        color: #ff2323;
+        font-size:32rpx;
+        float:left;
+      }
+      .food-num{
+        float:right;
+        height:44rpx;
+        image{
+          display:inline-block;
+          width:45rpx;
+          height:44rpx;
+          /*background-color:red;*/
+          margin-left:40rpx;
+        }
+        .num{
+          vertical-align: top;
+          display:inline-block;
+          margin-left:40rpx;
+          font-size:36rpx;
+          color:#333;
+          height:100%;
+          line-height:45rpx;
+        }
+      }
+    }
+  }
+  /*底部固定栏*/
+  .tab-wrap{
+    width:100%;
+    height:120rpx;
+    background-color:#fff;
+    position:fixed;
+    bottom:0;
+    left:0;
+    .price{
+      width:50%;
+      height:100%;
+      display:inline-block;
+      padding-left:40rpx;
+      box-sizing:border-box;
+      text{
+        display:inline-block;
+        vertical-align: top;
+        height:100%;
+        line-height:120rpx;
+        color:#333;
+        font-size:34rpx;
+        font-weight:bold;
+      }
+    }
+    .mall-car{
+      position:absolute;
+      bottom:18rpx;
+      right:40rpx;
+      width:200rpx;
+      height:84rpx;
+      background-color:#ffd265;
+      border-radius:40rpx;
+      text-align:center;
+      line-height:84rpx;
+      font-size:32rpx;
+      color:#333;
+      image{
+        display:block;
+        width:54rpx;
+        height:54rpx;
+        /*background-color:red;*/
+        position:absolute;
+        top:0;
+        bottom:0;
+        left:0;
+        right:0;
+        margin:auto;
+      }
+      .num{
+        padding:5rpx 10rpx;
+        box-sizing:border-box;
+        background-color:red;
+        position:absolute;
+        top:10rpx;
+        right:10rpx;
+        color:#fff;
+        font-size:24rpx;
+        text-align:center;
+        line-height:28rpx;
+        border-radius:50%;
+      }
+    }
+  }
+  .foods-package-detail-wrap{
+    width:710rpx;
+    height:auto;
+    background-color:#fff;
+    marign:0 auto;
+    margin-top:20rpx;
+    .sold-list-head{
+      width:100%;
+      height:80rpx;
+      /*background-color:cyan;*/
+      image{
+        display:inline-block;
+        width:6rpx;
+        height:40rpx;
+        background-color:#ffd265;
+        margin-top:20rpx;
+        margin-right:20rpx;
+      }
+      view{
+        display:inline-block;
+        height:100%;
+        line-height:80rpx;
+        font-size:30rpx;
+        font-weight:bold;
+        color:#333;
+        vertical-align: top;
+      }
+    }
+    .desc{
+      width:100%;
+      padding:10rpx 30rpx 30rpx 30rpx;
+      box-sizing: border-box;
+      font-size:28rpx;
+      color:#666;
+    }
+  }
+</style>
+<template>
+  <view id="foods-package-detail">
+    <image class="foods-detail-img" src="{{detailCover}}"></image>
+    <view class="update-code">
+      <view class="foods-detail-img-desc-wrap">
+        <view class="detail-img-desc-title">{{detailTitle}}</view>
+        <view class="price-wrap">
+          <view class="price">￥{{(detailPrice/100) ? (detailPrice/100) : 0}}</view>
+          <view class="food-num">
+            <image class="reduce" src="../../../images/index/reduce.png" @tap.stop="reduce({{detailData}})"></image>
+            <text class="num">{{detailData.foodNum ? detailData.foodNum : 0}}</text>
+            <image class="increase" src="../../../images/index/increase.png" @tap.stop="add({{detailData}})"></image>
+          </view>
+        </view>
+      </view>
+      <!--食品简介-->
+      <view class="foods-package-detail-wrap">
+        <!--title-->
+        <view class="sold-list-head">
+          <image src=""></image>
+          <view>美食简介</view>
+        </view>
+        <!--文字描述-->
+        <view class="desc">
+          <rich-text nodes="{{detailContent}}"></rich-text>
+        </view>
+      </view>
+    </view>
+    <!--底部固定栏-->
+    <view class="tab-wrap">
+      <view class="price">
+        <text>总计：</text>
+        <text style="color:#ff2323">￥{{deliverData.price}}</text>
+      </view>
+      <view class="mall-car" @tap="myMenu">
+        我的菜单
+        <view class="num">{{deliverData.num}}</view>
+      </view>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import api from '../../../api/api'
+  export default class Foodspackagedetail extends wepy.page {
+    data = {
+      detailId:0,
+      detailTitle:'',
+      detailPrice:0,
+      detailContent:'',
+      detailCover:'',
+      detailData:null,   //deliver页面传过来的数据
+      deliverData:null,
+      globalDataNum:null,
+      count:0,
+      price:0,
+      price1:0,
+      price2:0
+    }
+    components = {
+    }
+    methods = {
+      myMenu(){
+        if(this.deliverData.num == 0){
+          wx.showToast({
+            title: '您还未选择商品',
+            icon: 'none',
+            duration: 1000
+          })
+        }else{
+          wx.navigateTo({
+            url:'./myMenu'
+          })
+        }
+      },
+      // 添加商品
+      add(jObject){
+        console.log(jObject)
+        this.deliverData.num ++;
+        let fixed = (jObject.price/100)*1;
+        this.deliverData.price = Number(this.deliverData.price) + Number(fixed);
+        this.deliverData.price = this.keepTwoDecimalFull(Number(this.deliverData.price));
+        this.detailData.foodNum ++;
+        // console.log(jObject)
+        let flag = false;
+        let index = -1;
+        // console.log(this.deliverData.orderGoods);
+        if(this.deliverData.orderGoods.length == 0){
+          jObject.foodNum = 1;
+          this.deliverData.orderGoods.push(jObject)
+        }else{
+          for(var i = 0;i<this.deliverData.orderGoods.length;i++){
+            if (this.deliverData.orderGoods[i].id == this.detailId) {
+              flag = true
+              index = i
+              // return;
+            }
+          }
+          if (flag) {
+            this.deliverData.orderGoods[index].foodNum++
+          }else {
+            jObject.foodNum++;
+            this.deliverData.orderGoods.push(jObject)
+          }
+        }
+        wx.setStorage({
+          key: 'deliverData',
+          data:this.deliverData
+        })
+        wepy.$instance.globalData.deliverData = this.deliverData;
+        wepy.$instance.globalData.detailNum = this.detailData.foodNum;
+        wepy.$instance.globalData.detailObject = jObject;
+        console.log(this.deliverData)
+      },
+      // 减少商品
+      reduce(jObject){
+        this.deliverData.num --;
+        let fixed = (jObject.price/100)*1;
+        console.log(fixed)
+        console.log(this.deliverData.price)
+        this.deliverData.price = Number(this.deliverData.price) - Number(fixed);
+        this.deliverData.price = this.keepTwoDecimalFull(Number(this.deliverData.price));
+        this.detailData.foodNum --;
+        // console.log(jObject)
+        let flag = false;
+        let index = -1;
+        // console.log(this.deliverData.orderGoods);
+        if(this.deliverData.orderGoods.length == 0){
+          jObject.foodNum = 1;
+          this.deliverData.orderGoods.push(jObject)
+        }else{
+          for(var i = 0;i<this.deliverData.orderGoods.length;i++){
+            if (this.deliverData.orderGoods[i].id == this.detailId) {
+              flag = true
+              index = i
+              // return;
+            }
+          }
+          if (flag) {
+            this.deliverData.orderGoods[index].foodNum--
+          }else {
+            jObject.foodNum--;
+            this.deliverData.orderGoods.push(jObject)
+          }
+        }
+        wx.setStorage({
+          key: 'deliverData',
+          data:this.deliverData
+        })
+        wepy.$instance.globalData.deliverData = this.deliverData;
+        wepy.$instance.globalData.detailNum = this.detailData.foodNum;
+        wepy.$instance.globalData.detailObject = jObject;
+        console.log(this.deliverData)
+      },
+    }
+    // 保留两位小数
+    keepTwoDecimalFull(num) {
+      var result = parseFloat(num);
+      if (isNaN(result)) {
+        return false;
+      }
+      result = Math.round(num * 100) / 100;
+      var s_x = result.toString();
+      var pos_decimal = s_x.indexOf('.');
+      if (pos_decimal < 0) {
+        pos_decimal = s_x.length;
+        s_x += '.';
+      }
+      while (s_x.length <= pos_decimal + 2) {
+        s_x += '0';
+      }
+      return s_x;
+    }
+    // 详情页请求数据
+    async getFoodDetailData(){
+      let url = api.apiMall + '/food/showDetails';
+      let data = {
+        goodId:this.detailId
+      }
+      await wepy.request({
+        url: url,
+        method: 'POST',
+        data: data,
+      }).then(res=>{
+        let data = res.data.data;
+        this.detailTitle = data.title;
+        this.detailPrice = data.price;
+        this.detailContent = data.content;
+        this.detailCover = data.cover;
+        // console.log(this.detailContent)
+        this.$apply();
+      })
+    }
+    onLoad(options){
+      let that = this;
+      // console.log(JSON.parse(options.detailData));
+      this.detailData = JSON.parse(options.detailData);
+      this.detailId = this.detailData.id;
+      // 获取全局变量中的数据
+      // this.deliverData = wepy.$instance.globalData.deliverData;
+      this.globalDataNum = wepy.$instance.globalData.num;
+      // console.log(this.deliverData);
+      wx.getStorage({
+        key: 'deliverData',
+        success: function(res) {
+          that.deliverData = res.data;
+          console.log(res.data)
+          that.$apply();
+        }
+      })
+    }
+    onShow(){
+      this.getFoodDetailData();
+    }
+  }
+</script>

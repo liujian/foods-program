@@ -1,0 +1,193 @@
+<style lang="less">
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+</style>
+
+<script>
+import wepy from 'wepy'
+import 'wepy-async-function'
+import api from './api/api'
+
+import { setStore } from 'wepy-redux'
+import configStore from './store'
+
+const store = configStore()
+setStore(store)
+
+export default class extends wepy.app {
+  config = {
+    pages: [
+      'pages/index/index',
+      'pages/mall/mall',
+      'pages/activity/activity',
+      'pages/score/score',
+      'pages/mine/mine',
+      'pages/index/deliver/deliver',
+      'pages/index/deliver/chooseNum',
+      'pages/index/deliver/foodsDetail',
+      'pages/index/deliver/foodsPackageDetail',
+      'pages/index/deliver/myMenu',
+      'pages/index/deliver/orderDone',
+      'pages/index/deliver/addBill',
+      'pages/index/deliver/billList',
+      'pages/index/deliver/mine',
+      'pages/index/deliver/myOrderList',
+      'pages/index/deliver/comment',
+      'pages/index/deliver/orderDetail',
+      'pages/index/deliver/editBill',
+      'pages/index/deliver/moreMyMenu',
+      'pages/index/deliver/moreOrderDone',
+      'pages/index/deliver/moreBillList',
+      'pages/index/takeOut/deliver',
+      'pages/index/takeOut/foodsPackageDetail',
+      'pages/index/takeOut/order',
+      'pages/index/takeOut/addressList',
+      'pages/index/takeOut/addAddress',
+      'pages/index/takeOut/editAddress',
+    ],
+    window: {
+      backgroundTextStyle: 'light',
+      navigationBarBackgroundColor: '#ffd265',
+      navigationBarTitleText: '堂食点餐',
+      navigationBarTextStyle: 'black'
+    },
+    tabBar: {
+      color: '#a9b7b7',
+      selectedColor: '#11cd6e',
+      borderStyle:"white",
+      list: [{
+        // selectedIconPath: "",
+        // iconPath: "",
+        pagePath: "pages/index/index",
+        text: "首页"
+      },{
+        // selectedIconPath: "",
+        // iconPath: "",
+        pagePath: "pages/mall/mall",
+        text: "商城"
+      },{
+        // selectedIconPath: "",
+        // iconPath: "",
+        pagePath: "pages/activity/activity",
+        text: "活动"
+      },{
+        // selectedIconPath: "",
+        // iconPath: "",
+        pagePath: "pages/score/score",
+        text: "积分"
+      },{
+        // selectedIconPath: "",
+        // iconPath: "",
+        pagePath: "pages/mine/mine",
+        text: "我的"
+      }]
+    },
+  }
+
+  globalData = {
+    userInfo: null,
+    code:''
+  }
+
+  constructor () {
+    super()
+    this.use('requestfix')
+    this.use('promisify');
+  }
+
+  onLaunch() {
+    this.testAsync()
+    // 登录
+    wx.login({
+      success: function(loginRes) {
+        // console.log(loginRes)
+        this.code = loginRes.code;
+        if (loginRes.code) {
+          const url = api.apiMall + '/food/getSessionKey'
+          const data = {
+            code:this.code
+          }
+          wx.request({
+            url: url, //仅为示例，并非真实的接口地址
+            data: data,
+            method:'POST',
+            success: function(res) {
+              wx.setStorage({
+                key:"openid",
+                data:res.data.results.openid
+              })
+              //检查session_key是否过期
+              wx.checkSession({
+                success: function(){
+                  //session_key 未过期，并且在本生命周期一直有效
+                  console.log("没有过期")
+                },
+                fail: function(){
+                  // session_key 已经失效，需要重新执行登录流程
+                  console.log('已经过期')
+                  wx.login() //重新登录
+                }
+              })
+            }
+          })
+          //获取用户信息
+          wx.getUserInfo({
+            success: function(res) {
+              // console.log(res.userInfo)
+              wx.setStorage({
+                key:'userInfo',
+                data:res.userInfo
+              })
+            }
+          })
+        }
+      }
+    });
+  }
+  // 传递CODE
+  async deliverCode(){
+    const url = api.apiMall + '/food/getSessionKey'
+    const data = {
+      code:this.code
+    }
+    await wepy.request({
+      url: url,
+      method: 'POST',
+      data: data,
+    }).then(res=>{
+      console.log(res)
+    })
+  }
+  sleep (s) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve('promise resolved')
+      }, s * 1000)
+    })
+  }
+  async testAsync () {
+    const data = await this.sleep(3)
+    console.log(data)
+  }
+
+  getUserInfo(cb) {
+    const that = this
+    if (this.globalData.userInfo) {
+      return this.globalData.userInfo
+    }
+    wepy.getUserInfo({
+      success (res) {
+        consaole.log(res)
+        that.globalData.userInfo = res.userInfo
+        cb && cb(res.userInfo)
+      }
+    })
+  }
+}
+</script>

@@ -1,0 +1,358 @@
+<style type="less">
+  page{
+    width:100%;
+    height:100%;
+    background-color:#f3f3f3;
+  }
+  .add-billing-wrap{
+    width:710rpx;
+    height:auto;
+    background-color:#fff;
+    margin:20rpx auto 0;
+    padding:0rpx 20rpx;
+    box-sizing:border-box;
+  }
+  .sold-list-head{
+    width:100%;
+    height:80rpx;
+    /*background-color:cyan;*/
+    margin:0 auto;
+    image{
+      display:inline-block;
+      width:6rpx;
+      height:40rpx;
+      background-color:#ffd265;
+      margin-top:20rpx;
+      margin-right:20rpx;
+    }
+    .title{
+      display:inline-block;
+      height:100%;
+      line-height:80rpx;
+      font-size:30rpx;
+      font-weight:bold;
+      color:#333;
+      vertical-align: top;
+    }
+    .bill-type{
+      display:inline-block;
+      vertical-align: top;
+      width:130rpx;
+      height:60rpx;
+      background-color:#f3f3f3;
+      border-radius: 6px;
+      font-size:30rpx;
+      color:#333;
+      text-align:center;
+      line-height:60rpx;
+      margin-top:10rpx;
+      margin-left:50rpx;
+    }
+    .bill-type-active{
+      background-color:#ffd265;
+    }
+    input{
+      display:inline-block;
+      vertical-align: top;
+      width:500rpx;
+      float:right;
+      height:100%;
+      line-height:80rpx;
+      /*background-color:red;*/
+      font-size:30rpx;
+      font-weight:normal;
+    }
+  }
+  /*保存按钮*/
+  .save-btn-wrap{
+    width:100%;
+    height:120rpx;
+    background-color:#fff;
+    position:fixed;
+    bottom:0;
+    left:0;
+    z-index:10;
+    padding:11rpx 20rpx;
+    box-sizing:border-box;
+    .save-btn{
+      width:710rpx;
+      height:98rpx;
+      background-color:#ffd265;
+      font-size:36rpx;
+      color:#333;
+      border-radius: 49rpx;
+      text-align:center;
+      line-height:98rpx;
+    }
+  }
+  .sex-wrap{
+    width:269rpx;
+    height:60rpx;
+    margin:30rpx 125rpx;
+    view{
+      float:left;
+      width: 100rpx;
+      height: 60rpx;
+      background-color: #f3f3f3;
+      border-radius: 6rpx;
+      font-size:30rpx;
+      color:#333;
+      text-align:center;
+      line-height:60rpx;
+      margin-right:30rpx;
+    }
+    .sex-active{
+      background-color:#ffd265;
+    }
+  }
+  textarea{
+    display:inline-block;
+    width:510rpx;
+    height:200rpx;
+    /*background-color:red;*/
+    font-size:30rpx;
+    padding:25rpx;
+    box-sizing:border-box;
+    border-bottom:2rpx solid #f3f3f3;
+  }
+  .province{
+    display:inline-block;
+    float:right;
+    vertical-align:top;
+    width:500rpx;
+    height:100%;
+    font-size:30rpx;
+    color:#999;
+  }
+  /*默认*/
+  .tab-wrap {
+    width: 100%;
+    height: 120rpx;
+    background-color: #fff;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    .bill-btn{
+      width: 710rpx;
+      height: 84rpx;
+      background-color: #ffd265;
+      border-radius: 42rpx;
+      margin:18rpx auto 0;
+      color: #333333;
+      font-size:32rpx;
+      text-align:center;
+      line-height:84rpx;
+      position:relative;
+    }
+  }
+
+  .setting-wrap{
+    width:710rpx;
+    height:106rpx;
+    background-color:#fff;
+    margin:21rpx auto 0;
+    padding:0 44rpx;
+    box-sizing:border-box;
+    image{
+      display:block;
+      width:33rpx;
+      height:33rpx;
+      float:left;
+      margin-right:30rpx;
+      margin-top:37rpx;
+    }
+    view{
+      height:100%;
+      line-height:106rpx;
+      float:left;
+      font-size:30rpx;
+      color:#333;
+    }
+  }
+</style>
+<template>
+  <view id="add-billing" style="overflow:hidden;">
+    <form action="" @submit="formSubmit">
+      <view class="add-billing-wrap">
+        <!--title-->
+        <view class="sold-list-head">
+          <image></image>
+          <view class="title">联系人</view>
+        </view>
+        <!--分割线-->
+        <view style="width:670rpx;height:2rpx;margin:0 auto;background-color:#f3f3f3;margin-top:10rpx;"></view>
+        <view class="name-wrap">
+          <!--收货人名称-->
+          <view class="sold-list-head">
+            <image src="" style="background-color:#fff;"></image>
+            <view class="title">名字</view>
+            <input value="" name="name" type="text" placeholder-style="color:#969696;" placeholder="请输入收货人的名字"/>
+          </view>
+          <!--选择性别-->
+          <view class="sex-wrap">
+            <view @tap="chooseSex" class="{{sexStatus == (index+1) ? 'sex-active' : ''}}" data-index="{{(index+1)}}" wx:for="{{sex}}" wx:key="index">{{item}}</view>
+          </view>
+          <!--分割线-->
+          <view style="width:670rpx;height:2rpx;margin:0 auto;background-color:#f3f3f3;margin-top:35rpx;"></view>
+          <!--电话-->
+          <view class="sold-list-head">
+            <image src="" style="background-color:#fff;"></image>
+            <view class="title">电话</view>
+            <input value="" name="mobile" type="number" placeholder-style="color:#969696;" placeholder="请输入收货人的电话"/>
+          </view>
+        </view>
+      </view>
+      <!--地址-->
+      <view style="width:710rpx;height:auto;margin:20rpx auto 0;background-color:#fff;padding:0rpx 20rpx;box-sizing:border-box;">
+        <!--title-->
+        <view class="sold-list-head">
+          <image></image>
+          <view class="title">收货地址</view>
+        </view>
+        <!--分割线-->
+        <view style="width:670rpx;height:2rpx;margin:0 auto;background-color:#f3f3f3;margin-top:10rpx;"></view>
+        <!--选择省市区-->
+        <view class="sold-list-head">
+          <image src="" style="background-color:#fff;"></image>
+          <view class="title">省/市/区</view>
+          <view class="province">
+            <picker mode="region" @change="bindRegionChange" value="请选择省市区">
+              <view class="picker" style="line-height:80rpx;">
+                请选择：{{region[0]}}{{region[1]}}{{region[2]}}
+              </view>
+            </picker>
+          </view>
+        </view>
+        <!--选择地址-->
+        <view class="sold-list-head">
+          <image src="" style="background-color:#fff;"></image>
+          <view class="title">地址</view>
+          <input value="" @tap="chooseLocation" disabled name="address" type="text" placeholder-style="color:#969696;" placeholder="{{address}}"/>
+        </view>
+        <!--补充说明-->
+        <view class="sold-list-head" style="height:auto;">
+          <image src="" style="background-color:#fff;"></image>
+          <view class="title">补充说明</view>
+          <textarea placeholder-style="color:#969696;" placeholder="{{supplement}}" name="detail" id=""></textarea>
+        </view>
+      </view>
+      <!--底部固定栏-->
+      <view class="tab-wrap">
+        <button class="bill-btn" formType="submit">保存</button>
+      </view>
+    </form>
+
+    <!--默认-->
+    <view class="setting-wrap">
+      <image src="{{active ? '../../../images/index/right-active.png': '../../../images/index/right.png'}}" @tap="chooseActive"></image>
+      <view>设为默认发票</view>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import api from '../../../api/api'
+  export default class Addbill extends wepy.page {
+    config = {
+      navigationBarTitleText: '添加地址'
+    }
+    data = {
+      sex:['女士','男士'],
+      sexStatus:1,
+      latitude:'',
+      longitude:'',
+      region:[],
+      address:'请选择收货地址',
+      allAddress:'',     //传给后台的地址拼接字符串
+      status:0,
+      active:false,
+      supplement:'例：xxx小区/大厦/学校'     //补充说明
+    }
+    components = {
+    }
+    methods = {
+      // 提交收货地址表单
+      formSubmit(e){
+        this.submitInput = e.detail.value;
+        this.submitInput.sex = this.sexStatus;
+
+        // this.allAddress = this.address + e.detail.value.detail;
+        console.log(this.submitInput.detail);
+        if(this.address){
+          this.submitAddressData();
+        }
+      },
+      // 选择性别
+      chooseSex(e){
+        let index = e.currentTarget.dataset.index;
+        this.sexStatus = index;
+      },
+      // 是否设为默认发票
+      chooseActive(){
+        this.active = !this.active
+        this.status = !this.status;
+      },
+      // 选择地址
+      chooseLocation(){
+        let that = this;
+        wx.getLocation({
+          type: 'wgs84',
+          success: function(res){
+            console.log(res);
+            wx.chooseLocation({
+              success:function(res){
+                // console.log(res)
+                that.latitude = res.latitude;
+                that.longitude = res.longitude;
+                that.address = res.name;
+                that.$apply();
+              }
+            })
+          }
+        })
+      },
+      //选择省市区
+      bindRegionChange(e){
+        console.log('picker发送选择改变，携带值为', e.detail.value)
+        this.region = e.detail.value;
+      }
+    }
+    // 提交添加地址表单
+    async submitAddressData(){
+      const url = api.apiMall + '/takeaway/address'
+      const data = {
+        merchantId:1,
+        userId:8,
+        type:1,   //type 1为添加 2为编辑
+        province:this.region[0],
+        city:this.region[1],
+        district:this.region[2],
+        addressId:'',   //编辑时的ID
+        truename:this.submitInput.name,
+        mobile:this.submitInput.mobile,
+        address:this.address,  //补充说明
+        lng:this.longitude,
+        lat:this.latitude,
+        sex:this.sexStatus,
+        added:this.submitInput.detail ? this.submitInput.detail : '',
+        status:this.status
+      }
+      console.log(data);
+      await wepy.request({
+        url: url,
+        method: 'POST',
+        data: data,
+      }).then(res=>{
+        const data = res.data;
+        if(data.code == 0){
+          wx.redirectTo({
+            url:'./addressList'
+          })
+        }
+        console.log(res)
+      })
+    }
+    onLoad(){
+    }
+  }
+</script>

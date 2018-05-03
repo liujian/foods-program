@@ -1,0 +1,148 @@
+<style type="less">
+  page{
+    width:100%;
+    height:100%;
+    background-color:#f3f3f3;
+  }
+  .foods-detail-img{
+    display:block;
+    width:100%;
+    height:450rpx;
+  }
+  .foods-detail-img-desc-wrap{
+    width:710rpx;
+    height:164rpx;
+    background-color:#fff;
+    margin:0 auto;
+    padding:40rpx;
+    box-sizing:border-box;
+    .detail-img-desc-title{
+      color:#333;
+      font-size:32rpx;
+    }
+    .price-wrap{
+      width:100%;
+      height:44rpx;
+      /*background-color:cyan;*/
+      margin-top:14rpx;
+      .price{
+        color: #ff2323;
+        font-size:32rpx;
+        float:left;
+      }
+      .food-num{
+        float:right;
+        height:44rpx;
+        image{
+          display:inline-block;
+          width:45rpx;
+          height:44rpx;
+          /*background-color:red;*/
+          margin-left:40rpx;
+        }
+      }
+    }
+  }
+  /*底部固定栏*/
+  .tab-wrap{
+    width:100%;
+    height:120rpx;
+    background-color:#fff;
+    position:fixed;
+    bottom:0;
+    left:0;
+    .price{
+      width:50%;
+      height:100%;
+      display:inline-block;
+      padding-left:40rpx;
+      box-sizing:border-box;
+      text{
+        display:inline-block;
+        vertical-align: top;
+        height:100%;
+        line-height:120rpx;
+        color:#333;
+        font-size:34rpx;
+        font-weight:bold;
+      }
+    }
+    .mall-car{
+      position:absolute;
+      bottom:18rpx;
+      right:40rpx;
+      width:200rpx;
+      height:84rpx;
+      background-color:#ffd265;
+      border-radius:40rpx;
+      text-align:center;
+      line-height:84rpx;
+      image{
+        display:block;
+        width:54rpx;
+        height:54rpx;
+        /*background-color:red;*/
+        position:absolute;
+        top:0;
+        bottom:0;
+        left:0;
+        right:0;
+        margin:auto;
+      }
+      .num{
+        padding:5rpx 10rpx;
+        box-sizing:border-box;
+        background-color:red;
+        position:absolute;
+        top:10rpx;
+        right:10rpx;
+        color:#fff;
+        font-size:24rpx;
+        text-align:center;
+        line-height:28rpx;
+        border-radius:50%;
+      }
+    }
+  }
+</style>
+<template>
+  <view id="foods-detail">
+    <image class="foods-detail-img" src="https://img.alicdn.com/tfs/TB1IASDiSBYBeNjy0FeXXbnmFXa-520-280.jpg_q90_.webp"></image>
+    <view class="foods-detail-img-desc-wrap">
+      <view class="detail-img-desc-title">葡国鸡黑椒牛肉套餐 + 红酒</view>
+      <view class="price-wrap">
+        <view class="price">￥185</view>
+        <view class="food-num">
+          <image class="reduce" src="../../../images/index/reduce.png"></image>
+          <text style="display:inline-block;margin-left:40rpx;font-size:36rpx;color:#333;vertical-align: top;height:100%;line-height:45rpx;">5</text>
+          <image class="increase" src="../../../images/index/increase.png"></image>
+        </view>
+      </view>
+    </view>
+    <!--空白 缺东西-->
+
+
+    <!--底部固定栏-->
+    <view class="tab-wrap">
+      <view class="price">
+        <text>总计：</text>
+        <text style="color:#ff2323">￥340</text>
+      </view>
+      <view class="mall-car">
+        我的菜单
+        <view class="num">8</view>
+      </view>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+  export default class Foodsdetail extends wepy.page {
+    data = {}
+    components = {
+    }
+    methods = {
+
+    }
+  }
+</script>

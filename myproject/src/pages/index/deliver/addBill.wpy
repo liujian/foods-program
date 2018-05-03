@@ -1,0 +1,282 @@
+<style type="less">
+  page{
+    width:100%;
+    height:100%;
+    background-color:#f3f3f3;
+  }
+  .add-billing-wrap{
+    width:710rpx;
+    height:auto;
+    background-color:#fff;
+    margin:20rpx auto 0;
+    padding:30rpx 20rpx 0;
+    box-sizing:border-box;
+    .sold-list-head{
+      width:100%;
+      height:80rpx;
+      /*background-color:cyan;*/
+      margin:0 auto;
+      image{
+        display:inline-block;
+        width:6rpx;
+        height:40rpx;
+        background-color:#ffd265;
+        margin-top:20rpx;
+        margin-right:20rpx;
+      }
+      .title{
+        display:inline-block;
+        height:100%;
+        line-height:80rpx;
+        font-size:30rpx;
+        font-weight:bold;
+        color:#333;
+        vertical-align: top;
+      }
+      .bill-type{
+        display:inline-block;
+        vertical-align: top;
+        width:130rpx;
+        height:60rpx;
+        background-color:#f3f3f3;
+        border-radius: 6px;
+        font-size:30rpx;
+        color:#333;
+        text-align:center;
+        line-height:60rpx;
+        margin-top:10rpx;
+        margin-left:50rpx;
+      }
+      .bill-type-active{
+        background-color:#ffd265;
+      }
+      input{
+        display:inline-block;
+        vertical-align: top;
+        width:515rpx;
+        float:right;
+        height:100%;
+        line-height:80rpx;
+        /*background-color:red;*/
+        font-size:30rpx;
+        font-weight:normal;
+      }
+    }
+  }
+  /*公司名称*/
+  .company-name{
+    width:100%;
+    height:110rpx;
+    padding:17rpx 0;
+    box-sizing:border-box;
+    border-top:2rpx solid #f3f3f3;
+  }
+  .save-btn-wrap{
+    width:100%;
+    height:120rpx;
+    background-color:#fff;
+    position:fixed;
+    bottom:0;
+    left:0;
+    z-index:10;
+    padding:11rpx 20rpx;
+    box-sizing:border-box;
+    .save-btn{
+      width:710rpx;
+      height:98rpx;
+      background-color:#ffd265;
+      font-size:36rpx;
+      color:#333;
+      border-radius: 49rpx;
+      text-align:center;
+      line-height:98rpx;
+    }
+  }
+
+  .setting-wrap{
+    width:710rpx;
+    height:106rpx;
+    background-color:#fff;
+    margin:21rpx auto 0;
+    padding:0 44rpx;
+    box-sizing:border-box;
+    image{
+      display:block;
+      width:33rpx;
+      height:33rpx;
+      float:left;
+      margin-right:30rpx;
+      margin-top:37rpx;
+    }
+    view{
+      height:100%;
+      line-height:106rpx;
+      float:left;
+      font-size:30rpx;
+      color:#333;
+    }
+  }
+</style>
+<template>
+  <view id="add-billing" style="overflow:hidden;">
+    <view class="add-billing-wrap">
+      <!--title-->
+      <view class="sold-list-head" style="margin-bottom:30rpx;">
+        <image src=""></image>
+        <view class="title">发票类型</view>
+        <view @tap="changeBillType" class="bill-type {{companyBill == index ? 'bill-type-active':''}}" wx:for="{{billType}}" wx:key="index" data-index="{{index}}">{{item}}</view>
+      </view>
+      <form action="" @submit="companySubmit">
+        <!--公司发票-->
+        <view style="display:{{companyShowOrFalse}}" class="company-name" wx:for="{{companyBillPlacerholderData}}" wx:key="index" >
+          <view class="sold-list-head">
+            <image></image>
+            <view class="title">{{companyBillPlacerholderData[index].title}}</view>
+            <input value="{{billData[index]}}" name="{{companyBillPlacerholderData[index].name}}" @focus="bindinput" type="{{(index==3 || index==4) ? 'number' : 'text'}}" placeholder-style="color:#969696;" placeholder="{{companyBillPlacerholderData[index].placerholder}}"/>
+          </view>
+        </view>
+        <!--保存按钮-->
+        <view class="save-btn-wrap">
+          <button class="save-btn" formType="submit">保存</button>
+        </view>
+      </form>
+
+      <!--个人发票-->
+      <view style="display:{{privateShowOrFalse}}" class="company-name" wx:for="{{peopleBillPlacerholderData}}" wx:key="index">
+        <view class="sold-list-head">
+          <image></image>
+          <view class="title">{{peopleBillPlacerholderData[index].name}}</view>
+          <input value="{{billData[0]}}" type="text" placeholder-style="color:#969696" placeholder="{{peopleBillPlacerholderData[index].placerholder}}" @input="privateBill"/>
+        </view>
+      </view>
+    </view>
+    <!--保存btn-->
+    <view class="setting-wrap">
+      <image src="{{active ? '../../../images/index/right-active.png': '../../../images/index/right.png'}}" @tap="chooseActive"></image>
+      <view>设为默认发票</view>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import api from '../../../api/api'
+  export default class Addbill extends wepy.page {
+    config = {
+      navigationBarTitleText: '添加发票'
+    }
+    data = {
+      active:false,
+      billType:['公司','个人'],
+      companyShowOrFalse:'block',          //公司和个人发票显示状态
+      privateShowOrFalse:'none',
+      companyBill:0,
+      billData:null,      //编辑页获得到的数据
+      companyBillPlacerholderData:[{
+        'title': '公司名称',
+        'placerholder': '请输入公司名称(必填)',
+        'name':'companyName',
+        'value':''
+      },{
+        'title': '税号',
+        'placerholder': '请输入纳税人识别号(必填)',
+        'name':'billNumber',
+        'value':''
+      },{
+        'title': '单位地址',
+        'placerholder': '请输入单位地址',
+        'name':'companyAddress',
+        'value':''
+      },{
+        'title': '电话号码',
+        'placerholder': '请输入电话号码',
+        'name':'telphoneNumber',
+        'value':''
+      },{
+        'title': '开户银行',
+        'placerholder': '请输入开户行名称',
+        'name':'bank',
+        'value':''
+      },{
+        'title': '银行账户',
+        'placerholder': '请输入开户银行账户',
+        'name':'bankAccount',
+        'value':''
+      }],
+      peopleBillPlacerholderData:[{
+        'name':'名称',
+        'placerholder':'请输入名字(必填)'
+      }],
+      submitData:null,
+      status:0,
+      type:1,
+      privateBill:'',
+      billId:0
+    }
+    components = {
+    }
+    methods = {
+      // 获取个人发票信息
+      privateBill(e){
+        console.log(e.detail.value)
+        this.privateBill = e.detail.value;
+      },
+      changeBillType(e){
+        this.companyBill = e.currentTarget.dataset.index;
+        if(e.currentTarget.dataset.index == 0){
+          this.companyShowOrFalse = 'block';
+          this.privateShowOrFalse = 'none';
+          this.type = 1;
+
+        }else if(e.currentTarget.dataset.index == 1){
+          this.companyShowOrFalse = 'none';
+          this.privateShowOrFalse = 'block';
+          this.type = 2;
+        }
+      },
+      bindinput(){
+        console.log("获取焦点结束")
+      },
+      // 是否设为默认发票
+      chooseActive(){
+        this.active = !this.active
+        this.status = !this.status;
+      },
+      companySubmit(e){
+        console.log("事件触发")
+        this.submitData = e.detail.value;
+        this.submitCompanyBill();
+      },
+    }
+    // 提交发票表单
+    async submitCompanyBill(){
+      const url = api.apiMall + '/invoice/invoiceadd'
+      const data = {
+        merchantId:1,
+        userId:8,
+        type:this.type,
+        companyName:this.submitData.companyName ? this.submitData.companyName :this.privateBill,
+        billNumber:this.submitData.billNumber ? this.submitData.billNumber : '',
+        companyAddress:this.submitData.companyAddress ? this.submitData.companyAddress : '',
+        telphoneNumber:this.submitData.telphoneNumber ? this.submitData.telphoneNumber: '',
+        bank:this.submitData.bank ? this.submitData.bank : '',
+        bankAccount:this.submitData.bankAccount ? this.submitData.bankAccount : '',
+        status:this.status ? this.status : 0
+      }
+      await wepy.request({
+        url: url,
+        method: 'POST',
+        data: data,
+      }).then(res=>{
+        // const data = res.data.data;
+        console.log(res)
+        if(res.statusCode == 200){
+          wx.redirectTo({
+            url:'./billList'
+          })
+        }
+      })
+    }
+    onLoad(){
+    }
+  }
+</script>

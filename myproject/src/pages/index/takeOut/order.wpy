@@ -1,0 +1,780 @@
+<style type="less">
+  page{
+    width:100%;
+    height:100%;
+    background-color:#f3f3f3;
+  }
+  /*添加收货地址*/
+
+  #my-menu{
+    padding-bottom:130rpx;
+    box-sizing:border-box;
+    .order-list-wrap{
+      width:100%;
+      height:100%;
+      padding:20rpx;
+      box-sizing:border-box;
+    }
+  }
+  .sold-list-head{
+    width:100%;
+    height:80rpx;
+    /*background-color:cyan;*/
+    padding :0 20rpx;
+    box-sizing:border-box;
+    .image{
+      display:inline-block;
+      width:6rpx;
+      height:40rpx;
+      background-color:#ffd265;
+      margin-top:20rpx;
+      margin-right:20rpx;
+    }
+    view{
+      display:inline-block;
+      height:100%;
+      line-height:80rpx;
+      font-size:30rpx;
+      color:#333;
+      vertical-align: top;
+    }
+  }
+  .order-wrap-wrap{
+    width:100%;
+    height:auto;
+    background-color:#fff;
+    pdding-bottom:30rpx;
+    border-radius:6rpx;
+    box-sizing:border-box;
+  }
+  .user-info-model-wrap{
+    width:656rpx;
+    height:auto;
+    padding-left:40rpx;
+    box-sizing:border-box;
+  }
+  .order-wrap{
+    width:100%;
+    height:auto;
+    /*订单列表*/
+    .user-info-wrap{
+      width:656rpx;
+      height:auto;
+      .user-info{
+        width:100%;
+        height:80rpx;
+        background-color:#f3f3f3;
+        font-size:32rpx;
+        color:#333;
+        padding:0 7rpx;
+        box-sizing:border-box;
+        .user-profile{
+          display:inline-block;
+          width:70rpx;
+          height:70rpx;
+          background-color:red;
+          border-radius:50%;
+          margin-top:5rpx;
+          margin-right:30rpx;
+        }
+        .user-name{
+          display:inline-block;
+          height:100%;
+          vertical-align: top;
+          line-height:80rpx;
+        }
+        .food-num{
+          display:inline-block;
+          float:right;
+          vertical-align:top;
+          height:100%;
+          line-height:80rpx;
+        }
+      }
+      .foods-list{
+        width:100%;
+        height:140rpx;
+        /*background-color:green;*/
+        margin-top:40rpx;
+        .foods-pic{
+          display:inline-block;
+          width:140rpx;
+          height:140rpx;
+          /*background-color:aqua;*/
+        }
+        .foods-pic-desc{
+          float:right;
+          vertical-align: top;
+          width:475rpx;
+          height:100%;
+          /*background-color:yellow;*/
+          padding-right:7rpx;
+          box-sizing:border-box;
+          position:relative;
+          .foods-name{
+            height:36rpx;
+            view{
+              display:block;
+              font-size:32rpx;
+              color:#333;
+              float:left;
+            }
+            .price{
+              float:right;
+              color:#ff2323;
+            }
+          }
+          .num{
+            font-size:32rpx;
+            color:#969696;
+            text-align:left;
+            position:absolute;
+            bottom:0;
+            left:0;
+          }
+        }
+      }
+    }
+  }
+  .line{
+    width:670rpx;
+    height:2rpx;
+    margin:0 auto;
+    background-color:#f3f3f3;
+    margin-top:40rpx;
+  }
+  /*底部固定栏*/
+  .tab-wrap{
+    width:100%;
+    height:120rpx;
+    background-color:#fff;
+    position:fixed;
+    bottom:0;
+    left:0;
+    z-index:100;
+    .price{
+      width:50%;
+      height:100%;
+      display:inline-block;
+      padding-left:40rpx;
+      box-sizing:border-box;
+      text{
+        display:inline-block;
+        vertical-align: top;
+        height:100%;
+        line-height:120rpx;
+        color:#333;
+        font-size:34rpx;
+        font-weight:bold;
+      }
+    }
+    .mall-car{
+      position:absolute;
+      bottom:18rpx;
+      right:40rpx;
+      width:200rpx;
+      height:84rpx;
+      background-color:#ffd265;
+      border-radius:40rpx;
+      font-size:32rpx;
+      color:#333;
+      line-height:84rpx;
+      text-align:center;
+    }
+  }
+
+  /*遮罩*/
+  .commodity_screen {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #000;
+    background:rgba(0,0,0,0.5);
+    overflow: hidden;
+    z-index: 1000;
+    color: #fff;
+    .sale{
+      width:500rpx;
+      height:auto;
+      border-radius:10rpx;
+      background-color:#fff;
+      position:absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      font-size:28rpx;
+      color:#333;
+      .activity{
+        width:100%;
+        height:98rpx;
+        background-color: #ffd265;
+        border-radius: 10rpx 10rpx 0rpx 0rpx;
+        font-size:32rpx;
+        color:#333;
+        padding:0 20rpx;
+        box-sizing:border-box;
+        line-height:98rpx;
+      }
+      .view{
+        width:100%;
+        height:33rpx;
+        margin-bottom:20rpx;
+        image{
+          display:inline-block;
+          width:33rpx;
+          height:100%;
+          margin-right:24rpx;
+        }
+        view{
+          vertical-align: top;
+          display:inline-block;
+
+        }
+      }
+      .viewlast-child{
+        margin-bottom:0;
+      }
+    }
+    .close{
+      width:24rpx;
+      height:24rpx;
+      background-color:red;
+      position:absolute;
+      top:20rpx;
+      right:20rpx;
+    }
+  }
+  .billing{
+    width:100%;
+    height:80rpx;
+    overflow:hidden;
+  }
+  .billing-active{
+    height:auto;
+  }
+
+  /*添加收货地址 update by lisa in 2018-4-46*/
+  .address-wrap{
+    width:720rpx;
+    height:406rpx;
+    background-color:#fff;
+    margin:20rpx auto 0;
+    .fn-deliver{
+      width: 670rpx;
+      height: 98rpx;
+      background-color: #ffd265;
+      border-radius: 6rpx;
+      margin:0 auto;
+      font-size:32rpx;
+      color:#333;
+      line-height:98rpx;
+      padding:0 20rpx;
+      box-sizing:border-box;
+      view{
+        float:left;
+      }
+      .time{
+        float:right;
+      }
+    }
+    .add-address{
+      width: 256rpx;
+      height: 35rpx;
+      position:absolute;
+      top:0;
+      right:0;
+      left:0;
+      bottom:0;
+      margin:auto;
+      image{
+        vertical-align: top;
+        float:left;
+        width:35rpx;
+        height:35rpx;
+      }
+      view{
+        vertical-align: top;
+        float:right;
+        color:#333;
+        font-size:30rpx;
+        margin-top:-4rpx;
+      }
+    }
+  }
+  .tableware-num{
+    width: 220rpx;
+    height: 66rpx;
+    background-color: #ffd265;
+    border-radius: 6rpx;
+    border: solid 2rpx #333333;
+    box-sizing:border-box;
+    float:right;
+    .reduce-wrap{
+      float:left;
+      width:59rpx;
+      height:100%;
+      border-right:solid 2rpx #333333;
+      box-sizing:border-box;
+      font-size:40rpx;
+      text-align:center;
+    }
+    .number{
+      display:block;
+      float:left;
+      width:98rpx;
+      height:80rpx;
+      text-align:center;
+    }
+    .add-wrap{
+      float:left;
+      width:59rpx;
+      height:100%;
+      font-size:40rpx;
+      text-align:center;
+      border-left:solid 2rpx #333333;
+    }
+  }
+  .refund-reason-wrap{
+    width:645rpx;
+    height:185rpx;
+    background-color:cyan;
+    margin:0 auto;
+    position:relative;
+    .refund-reason{
+      width:100%;
+      height:82rpx;
+      /*background-color:red;*/
+      position:absolute;
+      top:0;
+      bottom:0;
+      margin:auto;
+      .refund-reason-item{
+        height:82rpx;
+        font-size:30rpx;
+        color:#333;
+      }
+    }
+  }
+</style>
+<template>
+  <view id="my-menu">
+    <!--添加收货地址-->
+    <view class="address-wrap">
+      <view class="sold-list-head">
+        <view class="image"></view>
+        <view>配送地址</view>
+      </view>
+      <!--分割线-->
+      <view style="width:670rpx;height:2rpx;margin:0 auto;background-color:#f3f3f3;margin-top:10rpx;"></view>
+      <view class="refund-reason-wrap">
+        <!--新增收货地址-->
+        <!--<view class="add-address" @tap.stop="addressList">-->
+          <!--<image src="../../../images/index/add.png"></image>-->
+          <!--<view>新增收获地址</view>-->
+        <!--</view>-->
+
+        <!--退款原因-->
+        <view class="refund-reason">
+          <view class="refund-reason-item">
+            <view>西安市雁塔区尚品国际21104</view>
+            <view>周小婉  18829251749</view>
+          </view>
+        </view>
+        <image class=""></image>
+      </view>
+      <view class="fn-deliver">
+        <view>蜂鸟专送</view>
+        <view class="time">尽快送达(13:00)</view>
+      </view>
+    </view>
+    <!--订单列表-->
+    <view class="order-list-wrap">
+      <view style="width:100%;height:auto;background-color:#fff;pdding-bottom:30rpx;border-radius:6rpx;box-sizing:border-box;">
+        <!--一个人的订单-->
+        <view class="order-wrap">
+          <!--title-->
+          <view class="sold-list-head">
+            <view class="image"></view>
+            <view style="font-weight:bold;">订单商品</view>
+          </view>
+          <!--订单商品列表-->
+          <view style="width:656rpx;height:auto;padding-left:40rpx;box-sizing:border-box;">
+            <view class="user-info-wrap">
+              <!--<view class="user-info">-->
+              <!--<image class="user-profile" src="../../../images/index/logo.png"></image>-->
+              <!--<text class="user-name">张大妮</text>-->
+              <!--<text class="food-num">共2份</text>-->
+              <!--</view>-->
+              <!--点的餐食列表-->
+              <view class="foods-list" wx:for="{{deliverData.orderGoods}}" wx:key="{{index}}" wx:for-item="item">
+                <image class="foods-pic" src="{{item.cover}}"></image>
+                <view class="foods-pic-desc">
+                  <view class="foods-name">
+                    <view>{{item.title}}</view>
+                    <view class="price">￥{{item.singlePrice/100}}</view>
+                  </view>
+                  <view class="num">x {{item.num}}</view>
+                </view>
+              </view>
+            </view>
+          </view>
+
+          <!--包装费-->
+          <view class="sold-list-head">
+            <view class="image"></view>
+            <view style="font-weight:bold;">包装费</view>
+            <view style="display:inline-block;float:right;color:#333;">￥9</view>
+          </view>
+          <!--配送-->
+          <view class="sold-list-head">
+            <view class="image"></view>
+            <view style="font-weight:bold;">配送费</view>
+            <view style="display:inline-block;float:right;color:#333;">￥9</view>
+          </view>
+          <!--商家代金券-->
+          <view class="sold-list-head">
+            <view class="image"></view>
+            <view style="font-weight:bold;">商家代金券</view>
+            <view style="display:inline-block;float:right;color:#333;">暂无可用</view>
+          </view>
+        </view>
+        <!--选择优惠-->
+        <!--<view style="display:{{discountShowOrFalse}}">-->
+          <!--&lt;!&ndash;分割线&ndash;&gt;-->
+          <!--<view style="width:670rpx;height:2rpx;margin:0 auto;background-color:#f3f3f3;margin-top:40rpx;"> </view>-->
+          <!--&lt;!&ndash;优惠信息&ndash;&gt;-->
+          <!--&lt;!&ndash;title&ndash;&gt;-->
+          <!--<view class="sold-list-head">-->
+            <!--<view class="image"></view>-->
+            <!--<view style="font-weight:bold;">选择优惠</view>-->
+          <!--</view>-->
+        <!--</view>-->
+        <!--会员卡和微信支付-->
+        <view class="sold-list-head" style="padding-left:48rpx;" wx:for="{{discount}}" wx:key="index" data-id="{{discount[index].id}}" data-index="{{index}}" data-title="{{discount[index].title}}">
+          <view class="{{payWayStyleActive == index ? '' : 'payWayStyleActive'}}">{{discount[index].title}}</view>
+          <view style="display:inline-block;float:right;">
+            <text style="margin-right:15rpx;vertical-align:top;display:inline-block;" class="{{payWayStyleActive == index ? 'balance' : 'payWayStyleActive'}}"></text>
+            <image data-index="{{index}}" @tap="payWayActive" style="display:inline-block;width:33rpx;height:33rpx;border-radius:50%;margin-top:23rpx;" src="{{payWayActive == index ? '../../../images/index/right-active.png' : '../../../images/index/right.png'}}"></image>
+          </view>
+        </view>
+        <view style="width:670rpx;height:2rpx;margin:0 auto;background-color:#f3f3f3;margin-top:25rpx;"> </view>
+        <!--优惠规则-->
+        <view class="sold-list-head">
+          <view style="font-weight:bold;" style="color:#969696">优惠规则</view>
+          <view style="display:inline-block;float:right;color:#333;">
+            <view style="font-size:26rpx;color:#969696;margin-right:15rpx;">已优惠￥6</view>
+            <view class="price" style="font-size:36rpx;font-weight:bold;">
+              <text>总计：</text>
+              <text style="color:#ff2323;">￥{{deliverData.price ? deliverData.price : 0}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <!--支付方式-->
+      <view class="pay-way-wrap" style="background-color:#fff;margin-top:20rpx;">
+        <!--title-->
+        <view class="sold-list-head">
+          <view class="image"></view>
+          <view style="font-weight:bold;">支付方式</view>
+        </view>
+        <!--会员卡和微信支付-->
+        <view class="sold-list-head" style="padding-left:48rpx;" wx:for="{{payWayInfo}}" wx:key="index">
+          <view class="{{payWayStyleActivej == index ? '' : 'payWayStyleActive'}}">{{payWayInfo[index].payWay}}</view>
+          <view style="display:inline-block;float:right;">
+            <text style="vertical-align:top;display:inline-block;" class="">{{index==0?('￥'+balance/100):''}}</text>
+            <image wx:if="{{index==1}}" data-index="{{index}}" style="display:inline-block;width:33rpx;height:33rpx;border-radius:50%;margin-top:23rpx;" src="{{payWayStyleActivej == index ? '../../../images/index/right-active.png' : '../../../images/index/right.png'}}"></image>
+          </view>
+        </view>
+        <!--分割线-->
+        <view style="width:670rpx;height:2rpx;margin:0 auto;background-color:#f3f3f3;margin-top:25rpx;"> </view>
+        <!--选择餐具-->
+        <view class="sold-list-head" style="height:auto;padding:20rpx;">
+          <view class="image"></view>
+          <view style="font-weight:bold;">选择餐具</view>
+          <view class="tableware-num">
+            <view class="reduce-wrap" @tap="reduce">-</view>
+            <input class="number" type="number" value="{{tableWareNum}}" @input="input"/>
+            <view class="add-wrap" @tap="add">+</view>
+          </view>
+        </view>
+        <view style="width:670rpx;height:2rpx;margin:0 auto;background-color:#f3f3f3;margin-top:25rpx;"> </view>
+        <!--备注-->
+        <view class="sold-list-head">
+          <view class="image"></view>
+          <view style="font-weight:bold;">备注</view>
+          <view style="display:inline-block;float:right;color:#333;">{{tips ? tips : '无'}}</view>
+        </view>
+      </view>
+    </view>
+    <!--底部固定栏-->
+    <view class="tab-wrap">
+      <view class="price">
+        <text>总计：</text>
+        <text style="color:#ff2323">￥{{deliverData.price ? deliverData.price : 0}}</text>
+      </view>
+      <view class="mall-car">确认支付</view>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import api from '../../../api/api'
+  import util from '../../../utils/util'
+
+  export default class Order extends wepy.page {
+    config = {
+      navigationBarTitleText: '订单详情'
+    }
+    data = {
+      discountInfo:'优惠券',
+      deliverData:null,
+      singlePrice:0,
+      tips:'',
+      discount:[],  //优惠券
+      payWayActive:1000,
+      payWayStyleActive:1,
+      payWayStyleActivej:1,
+      payWayInfo:[{
+        'payWay': '会员卡余额'
+      },{
+        'payWay': '微信支付'
+      }],
+      billing:true,
+      billShow:'block',
+      billData:null,
+      length:0,
+      balance:'',
+      discountShowOrFalse:'display',
+      middlePrice:0,
+      isPromotion:9,     //是否选取优惠券
+      promotionMsg:'',    //优惠信息
+      promotionPrice:'',
+      prepay_id:'',
+      userInfo:null,
+      tableWareNum:0
+    }
+    components = {
+    }
+    methods = {
+      switch1Change: function (e){
+        console.log('switch1 发生 change 事件，携带值为', e.detail.value)
+      },
+      // 选择优惠券
+      payWayActive(e){
+        let dataset = e.currentTarget.dataset;
+        this.payWayActive = dataset.index;
+        this.payWayStyleActive = dataset.index;
+        if(this.discount[dataset.index].type == 1){
+          this.deliverData.price = this.keepTwoDecimalFull(this.middlePrice - (this.discount[dataset.index].price/100));
+          console.log(this.deliverData.price)
+        }else if(this.discount[dataset.index].type == 2){
+          this.deliverData.price = this.keepTwoDecimalFull(this.middlePrice * (this.discount[dataset.index].discount/10));
+        }
+        this.promotionId = this.discount[dataset.index].id;
+        this.promotionMsg = this.discount[dataset.index].title;
+        this.promotionPrice = this.discount[dataset.index].price;
+        console.log(this.promotionPrice);
+      },
+      // 发票开关
+      switch1Change(e) {
+        console.log('switch1 发生 change 事件，携带值为', e.detail.value)
+        this.billing = !this.billing;
+      },
+      // 调取支付
+      payMoney(){
+        this.payMoneyFn();
+      },
+      //跳转开票页
+      billList(){
+        wx.navigateTo({
+          url:'./billList'
+        })
+      },
+      // 重新选择发票
+      reChooseBill(){
+        console.log('我点了')
+        wx.navigateTo({
+          url:'./billList'
+        })
+      },
+      // 餐盒数量
+      add(){
+        this.tableWareNum ++
+      },
+      reduce(){
+        if(this.tableWareNum == 0){
+          this.tableWareNum <= 0;
+        }else{
+          this.tableWareNum --;
+        }
+      },
+      // 跳转地址列表页面
+      addressList(){
+        wx.navigateTo({
+          url:'./addressList'
+        })
+      }
+    }
+    // 获取优惠券接口
+    async getDiscount(){
+      const url = api.apiMall + '/food/promotion'
+      const data = {
+        merchantId:1,
+        userId:8,
+        total:this.deliverData.price
+      }
+      await wepy.request({
+        url: url,
+        method: 'POST',
+        data: data,
+      }).then((res)=>{
+        console.log(res.data.balance);
+        this.isPromotion = res.data.is_promotion;
+        if(res.data.data.length == 0){
+          this.discountShowOrFalse = 'none';
+        }else{
+          this.discountShowOrFalse = 'block';
+          // this.discount = res.data.data;
+          // this.balance = res.data.balance;
+        }
+        this.discount = res.data.data;
+        this.balance = res.data.balance;
+        this.$apply();
+      })
+    }
+    // 保留两位小数
+    keepTwoDecimalFull(num) {
+      var result = parseFloat(num);
+      if (isNaN(result)) {
+        return false;
+      }
+      result = Math.round(num * 100) / 100;
+      var s_x = result.toString();
+      var pos_decimal = s_x.indexOf('.');
+      if (pos_decimal < 0) {
+        pos_decimal = s_x.length;
+        s_x += '.';
+      }
+      while (s_x.length <= pos_decimal + 2) {
+        s_x += '0';
+      }
+      return s_x;
+    }
+    // 支付
+    async payMoneyFn(){
+      const url = api.apiMall + '/food/orderCommit';
+      const data = {
+        goodMessage:this.deliverData.orderGoods,
+        userId:8,
+        merchantId:1,
+        deskop:this.deliverData.tableNum,
+        number:this.deliverData.foodNum,
+        total:this.deliverData.price,
+        content:this.tips,
+        is_promotion:this.isPromotion ? this.isPromotion : 0,
+        promotionId:this.promotionId ? this.promotionId : '',
+        promotion_message:this.promotionMsg ? this.promotionMsg :'',
+        promotion_price:this.promotionPrice ? this.promotionPrice: '',
+        is_salecoupon:0,
+        salecouponId:'',
+        salecoupon_message:'',
+        salecoupon_price:'',
+        is_invoice:1,
+        invoiceId:1,  //必传
+        invoice_message:'发票名称',
+        invoice_number:'fdch7843534579'
+      }
+      await wepy.request({
+        url: url,
+        method: 'POST',
+        data: data,
+      }).then((res)=>{
+        // console.log(res.data)
+        //将orderId存到全局，供订单完成使用
+        wepy.$instance.globalData.orderId = res.data.orderId;
+        if(res.data.code == 100){
+          wepy.$instance.globalData.payWay = '微信支付'
+          let orderId = res.data.orderId;
+          let total = res.data.purplus;
+          wx.request({
+            // url: api.apiMall + '/food/wechantPay',
+            url: api.apiMall + '/wxpay/foodPay',
+            method:'POST',
+            data: {
+              orderId: orderId ,
+              openId: 'oJ7Ud0euWXyif-AB_x-ic-m0nP_o',
+              total:total
+            },
+            success: function(res) {
+              console.log(res.data)
+              let jssdk = res.data.jssdk;
+              // 微信支付
+              // const str = util.rnd(1,999999999);
+              wx.requestPayment({
+                'appId':jssdk.appId,
+                'timeStamp': jssdk.timestamp,
+                'nonceStr': jssdk.nonceStr,
+                'package': jssdk.package,
+                'signType': jssdk.signType,
+                'paySign': jssdk.paySign,
+                'success':function(res){
+                  console.log(res)
+                  wx.showToast({
+                    title: '支付成功',
+                    icon: 'success',
+                    duration: 1000
+                  })
+                  wx.navigateTo({
+                    url:'./orderDone'
+                  })
+                },
+                'fail':function(res){
+                }
+              })
+            }
+          })
+        }else{
+          console.log("会员支付成功")
+          wepy.$instance.globalData.payWay = '会员卡支付'
+          var that = this;
+          wx.showToast({
+            title: '支付成功',
+            icon: 'success',
+            duration: 1000,
+            success:function(res){
+              // 跳转订单完成页面
+              wx.redirectTo({
+                url:'./orderDone'
+              })
+            }
+          })
+        }
+        this.$apply();
+      })
+    }
+    onLoad(options){
+      let that = this;
+      //获取个人信息
+      wx.getStorage({
+        key: 'userInfo',
+        success: function(res) {
+          that.userInfo = res.data;
+          that.$apply();
+        }
+      })
+      console.log(options);
+      this.length = Object.keys(options).length;
+      console.log(this.length)
+      this.billData = options;
+      this.middlePrice = wepy.$instance.globalData.deliverData.price;
+      this.deliverData = wepy.$instance.globalData.deliverData;
+      console.log(this.deliverData)
+      this.tips = wepy.$instance.globalData.num.tips;
+      console.log(this.deliverData);
+      this.getDiscount();
+      this.$apply();
+    }
+  }
+</script>

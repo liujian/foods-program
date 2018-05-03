@@ -1,0 +1,953 @@
+<style type="less">
+  page{
+    width:100%;
+    height:100%;
+    background-color:#f3f3f3;
+  }
+  /*顶部样式*/
+  .deliver-wrap{
+    width:100%;
+    height:200rpx;
+    background-color:#ffd265;
+    border:1rpx solid #ffd265;
+    box-sizing:border-box;
+    .deliver-head-wrap{
+      width:710rpx;
+      height:200rpx;
+      padding-bottom:15rpx;
+      box-sizing:border-box;
+      background-color:#fff;
+      border-radius:6rpx;
+      position:relative;
+      margin:80rpx auto 0;
+      .deliver-head{
+        width:650rpx;
+        height:120rpx;
+        margin:auto;
+        image{
+          display:inline-block;
+          width:180rpx;
+          height:180rpx;
+          /*background-color:yellow;*/
+          margin-top:-60rpx;
+        }
+        .table-num-wrap{
+          width:470rpx;
+          height:64rpx;
+          /*background-color:yellow;*/
+          display:inline-block;
+          vertical-align: top;
+          margin-top:66rpx;
+          view{
+            width:50%;
+            display:inline-block;
+            vertical-align: top;
+            font-size:34rpx;
+            color:#333;
+            text-align:center;
+            line-height:64rpx;
+          }
+        }
+      }
+      .sale-wrap{
+        width:650rpx;
+        height:auto;
+        /*background-color:cyan;*/
+        margin:30rpx auto 0;
+        position:relative;
+        .sale-wrap-left{
+          width:90%;
+          height:26rpx;
+          margin-bottom:15rpx;
+          overflow:hidden;
+          image{
+            display:inline-block;
+            width:26rpx;
+            height:26rpx;
+            background-color:red;
+            vertical-align: top;
+            margin-right:24rpx;
+          }
+          view{
+            font-size:22rpx;
+            color:#666;
+            display:inline-block;
+            vertical-align: top;
+            margin-right:38rpx;
+            margin-top:-2rpx;
+          }
+        }
+        .sale-wrap-right{
+          width:10rpx;
+          height:19rpx;
+          position:absolute;
+          bottom:2rpx;
+          right:0;
+        }
+      }
+    }
+  }
+  /*选择菜品样式 定位样式*/
+  .hot-sold-wrap{
+    width:100%;
+    background-color:#fff;
+    margin-top:20rpx;
+    display:flex;
+    justify-content: space-between;
+    .sold-slide-list-wrqp{
+      width:180rpx;
+      height:auto;
+      float:left;
+      .sold-slide-list{
+        width:180rpx;
+        height:80rpx;
+        /*background-color:#ffd265;*/
+        background-color:#f3f3f3;
+        color:#333;
+        font-size:28rpx;
+        text-align:center;
+        line-height:80rpx;
+      }
+      .sold-slide-list-active{
+        background-color:#ffd265;
+      }
+    }
+    .sold-list-wrap{
+      height:auto;
+      /*background-color:red;*/
+      float:right;
+      .adver{
+        display:block;
+        width:530rpx;
+        height:150rpx;
+        margin:20rpx 0;
+      }
+      .sold-list-head{
+        width:550rpx;
+        height:80rpx;
+        /*background-color:cyan;*/
+        margin:0 auto;
+        image{
+          display:inline-block;
+          width:6rpx;
+          height:40rpx;
+          background-color:#ffd265;
+          margin-top:20rpx;
+          margin-right:20rpx;
+        }
+        view{
+          display:inline-block;
+          height:100%;
+          line-height:80rpx;
+          font-size:28rpx;
+          font-weight:bold;
+          color:#333;
+          vertical-align: top;
+        }
+        .desc{
+          font-size:22rpx;
+          color:#666;
+          font-weight:normal;
+          margin-left:24rpx;
+        }
+      }
+      .sold-list-content{
+        width:100%;
+        height:220rpx;
+        /*background-color:yellow;*/
+        padding:20rpx 20rpx 20rpx 0;
+        box-sizing:border-box;
+        .food-img{
+          display:inline-block;
+          width:180rpx;
+          height:180rpx;
+          /*background-color:red;*/
+          margin-right:30rpx;
+        }
+        .food-desc-wrap{
+          display:inline-block;
+          vertical-align: top;
+          width:320rpx;
+          height:148rpx;
+          /*background-color:green;*/
+          margin-top:16rpx;
+          position:relative;
+          .food-name{
+            font-size:32rpx;
+            color:#333;
+            font-weight:bold;
+          }
+          .food-num-wrap{
+            width:100%;
+            height:45rpx;
+            position:absolute;
+            bottom:0;
+            image{
+              display:inline-block;
+              width:45rpx;
+              height:44rpx;
+              /*background-color:red;*/
+            }
+            .price{
+              display:inline-block;
+              color:#ff2323;
+              vertical-align: top;
+              height:100%;
+              line-height:45rpx;
+
+            }
+            .num{
+              display:inline-block;
+              font-size:36rpx;
+              color:#333;
+              vertical-align: top;
+              height:100%;
+              line-height:45rpx;
+            }
+          }
+        }
+      }
+    }
+  }
+  /*底部固定栏*/
+  .tab-wrap{
+    width:100%;
+    height:120rpx;
+    background-color:#fff;
+    position:fixed;
+    bottom:0;
+    left:0;
+    .price{
+      width:50%;
+      height:100%;
+      display:inline-block;
+      padding-left:40rpx;
+      box-sizing:border-box;
+      text{
+        display:inline-block;
+        vertical-align: top;
+        height:100%;
+        line-height:120rpx;
+        color:#333;
+        font-size:34rpx;
+        font-weight:bold;
+      }
+    }
+    .mall-car{
+      position:absolute;
+      bottom:18rpx;
+      right:40rpx;
+      width:150rpx;
+      height:84rpx;
+      background-color:#ffd265;
+      border-radius:40rpx;
+      image{
+        display:block;
+        width:54rpx;
+        height:54rpx;
+        /*background-color:red;*/
+        position:absolute;
+        top:0;
+        bottom:0;
+        left:0;
+        right:0;
+        margin:auto;
+      }
+      .num{
+        width:28rpx;
+        height:28rpx;
+        background-color:red;
+        position:absolute;
+        top:20rpx;
+        right:30rpx;
+        color:#fff;
+        font-size:24rpx;
+        text-align:center;
+        line-height:28rpx;
+        border-radius:50%;
+      }
+    }
+  }
+  /*遮罩*/
+  .commodity_screen {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #000;
+    background:rgba(0,0,0,0.5);
+    overflow: hidden;
+    z-index: 1000;
+    color: #fff;
+    .sale{
+      width:500rpx;
+      height:auto;
+      border-radius:10rpx;
+      background-color:#fff;
+      position:absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      font-size:28rpx;
+      color:#333;
+      .activity{
+        width:100%;
+        height:98rpx;
+        background-color: #ffd265;
+        border-radius: 10rpx 10rpx 0rpx 0rpx;
+        font-size:32rpx;
+        color:#333;
+        padding:0 20rpx;
+        box-sizing:border-box;
+        line-height:98rpx;
+      }
+      .view{
+        width:100%;
+        height:33rpx;
+        margin-bottom:20rpx;
+        image{
+          display:inline-block;
+          width:33rpx;
+          height:100%;
+          margin-right:24rpx;
+        }
+        view{
+          vertical-align: top;
+          display:inline-block;
+
+        }
+      }
+      .viewlast-child{
+        margin-bottom:0;
+      }
+    }
+    .close{
+      width:24rpx;
+      height:24rpx;
+      background-color:red;
+      position:absolute;
+      top:20rpx;
+      right:20rpx;
+    }
+  }
+</style>
+<template>
+  <view style="width:100%;height:100%;">
+    <view style="width:100%;height:280rpx;background-color:yellow;">
+      <view class="deliver-wrap">
+        <!--头部-->
+        <view class="deliver-head-wrap">
+          <view class="deliver-head">
+            <image src="{{logoImg}}"></image>
+            <view class="table-num-wrap">
+              <view class="table-num">桌号： {{tableNum}}</view>
+              <view class="user-num">人数： {{eatFoodNum}} 人</view>
+            </view>
+          </view>
+          <!--优惠券 区域-->
+          <view class="sale-wrap" @tap='showModal'>
+            <view class="sale-wrap-left">
+              <swiper style="vertical-align:top;display:inline-block;width:80%;height:100%" vertical="true" autoplay="true" circular="true" interval="1500">
+                <block  wx:for="{{activity}}" wx:key="index">
+                <swiper-item style="display:inline-block;width:100%;height:100%">
+                  <image src="{{activity[index].cover}}"></image>
+                  <view>{{activity[index].title}}</view>
+                </swiper-item>
+              </block>
+              </swiper>
+            </view>
+            <view style="float:right;font-size:22rpx;color:#666;position:absolute;right:30rpx;top:0;">{{activitysLength}}个活动</view>
+            <image src="../../../images/index/arrow-right.png" class="sale-wrap-right"></image>
+          </view>
+        </view>
+      </view>
+    </view>
+    <!--选择菜品-->
+    <view class="hot-sold-wrap" style="height:calc(100% - 420rpx);">
+      <view class="sold-slide-list-wrqp">
+        <scroll-view scroll-y style="display:block;width:100%;height:100%;display:flex;">
+          <view @tap="getStatus" id="NAV{{index}}" data-index="{{index}}" data-id="{{index}}" class="sold-slide-list {{index === status ? 'sold-slide-list-active' : ''}}" wx:for="{{catelogs}}" wx:key="index">{{item.title}}</view>
+        </scroll-view>
+      </view>
+      <view>
+        <scroll-view @scroll="listScroll" scroll-y style="height:100%;display:flex;" scroll-into-view="NAV{{status}}" data-view="NAV{{status}}" scroll-with-animation="true">
+          <view class="sold-list-wrap">
+            <!--增加的广告位-->
+            <image class="adver" src="https://img.alicdn.com/tfs/TB1IASDiSBYBeNjy0FeXXbnmFXa-520-280.jpg_q90_.webp"></image>
+            <view style="width:100%;height:auto;" wx:for="{{takeaways}}" wx:for-index="i1" wx:key="index" wx:for-item="i" data-id="NAV{{i1}}" id="NAV{{i1}}" data-length="{{i.goods.length}}">
+              <view class="sold-list-head">
+                <image src=""></image>
+                <view>{{i.title}}</view>
+                <view class="desc">大家喜欢吃，才是好吃！</view>
+              </view>
+              <view class="sold-list-content" wx:for="{{i.goods}}" wx:key="index" data-id="{{j.id}}" data-index="{{j1}}" wx:for-item="j" wx:for-index="j1">
+                <image class="food-img" src="{{j.cover}}" @tap='foodsPackageDetail({{j}})'></image>
+                <view class="food-desc-wrap">
+                  <view class="food-name">{{j.title}}</view>
+                  <view class="food-num-wrap">
+                    <text class="price" style="">￥{{j.price/100}}</text>
+                    <view style="float:right;width:180rpx;display:flex;justify-content: space-between;;">
+                      <image class="reduce" src="../../../images/index/reduce.png" @tap.stop="reduce({{j}},{{i1}},{{j1}})"></image>
+                      <text class="num" style="">{{j.foodNum}}</text>
+                      <image class="increase" src="../../../images/index/increase.png"  @tap.stop="add({{j}},{{i1}},{{j1}})"></image>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+    <!--底部固定栏-->
+    <view class="tab-wrap">
+      <view class="price">
+        <text>总计：</text>
+        <text style="width:150rpx;color:#ff2323">￥{{deliverData.price ? deliverData.price : price}}</text>
+      </view>
+      <view class="mall-car" @tap="myMenu">
+        <image src="../../../images/index/car.png"></image>
+        <view class="num">{{deliverData.num ? deliverData.num : count}}</view>
+      </view>
+    </view>
+    <!--遮罩开始-->
+    <view class="commodity_screen" wx:if="{{showModalStatus}}" catchtouchmove='true' @tap="hideModal">
+      <!--所有的优惠信息-->
+      <view class="sale" style="color:#333;">
+        <view class="activity">本店活动</view>
+        <view style="width:100%;height:auto;padding:20rpx;box-sizing:border-box;">
+          <view class="view" wx:for = "{{activity}}" wx:key="index">
+            <image src="{{activity[index].cover}}"></image>
+            <view >{{activity[index].title}}</view>
+          </view>
+        </view>
+        <image class="close" src="../../../images/index/close.png" @tap='hideModal'></image>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import api from '../../../api/api'
+  export default class Deliver extends wepy.page {
+    data = {
+      detailNum:0,
+      detailObject:null,
+      tableNum:0,
+      eatFoodNum:0,
+      activity:[],
+      catelogs:[],
+      takeaways:[],
+      allTakeaways:[],
+      activitysLength:0,   //活动长度
+      status: 0,
+      goods:[],
+      goodsLength:0,
+      reduceIcon:'none',  //减少的icon
+      count:0,        //购物车总数
+      price:0.00,        //商品总价
+      orderGoods:[],   //用户所选的商品对象
+      detailData:null,
+      socketFoodNum:'',
+      socketTableNum:'',
+      socketOpen:false,
+      price1:0,    //中间变量，用来总价转换
+      logoImg:'',
+      openid:0,
+      deliverData:null,
+      a:0
+
+    }
+    components = {
+    }
+    methods = {
+      //点击跳转事件
+      getStatus(e) {
+        this.status = e.currentTarget.dataset.index;
+      },
+      //滚动联动事件[遗留问题，待解决]
+      listScroll(e){
+//        console.log(e)
+      },
+      // 显示遮罩
+      showModal() {
+        // 显示遮罩层
+        var animation = wx.createAnimation({
+          duration: 200,
+          timingFunction: "linear",
+          delay: 0
+        })
+        this.animation = animation
+        animation.translateY(300).step()
+        this.setData({
+          animationData: animation.export(),
+          showModalStatus: true
+        })
+        setTimeout(function () {
+          animation.translateY(0).step()
+          this.setData({
+            animationData: animation.export()
+          })
+        }.bind(this), 200)
+      },
+      //隐藏遮罩
+      hideModal() {
+        // 隐藏遮罩层
+        var animation = wx.createAnimation({
+          duration: 200,
+          timingFunction: "linear",
+          delay: 0
+        })
+        this.animation = animation
+        animation.translateY(300).step()
+        this.setData({
+          animationData: animation.export(),
+        })
+        setTimeout(function () {
+          animation.translateY(0).step()
+          this.setData({
+            animationData: animation.export(),
+            showModalStatus: false
+          })
+        }.bind(this), 200)
+      },
+      // 跳转套餐食品详情页
+      foodsDetail(){
+        wx.navigateTo({
+          url:'./foodsDetail'
+        })
+      },
+      // 跳转购物车
+      myMenu(j,e){
+        let that = this;
+        wx.getStorage({
+          key: 'deliverData',
+          success: function(res) {
+            that.deliverData = res.data;
+            that.$apply();
+            // 判断是单人点餐还是多人点餐
+            console.log(that.socketTableNum)
+            if(that.socketTableNum){
+              if(that.deliverData.num == 0){
+                wx.showToast({
+                  title: '请选择商品',
+                  icon: 'none',
+                  duration: 1000
+                })
+              }else{
+                console.log("需要调后台接口")
+                that.getMoreOrderDoneData();
+                wx.navigateTo({
+                  url:'./moreMyMenu'
+                })
+              }
+            }else{
+              //这是无桌号点餐模式
+              if(that.deliverData.num == 0){
+                wx.showToast({
+                  title: '请选择商品',
+                  icon: 'none',
+                  duration: 1000
+                })
+              }else{
+                wx.navigateTo({
+                  url:'./myMenu'
+                })
+              }
+            }
+          }
+        })
+      },
+      //跳转单品食品详情页
+      foodsPackageDetail(jObject,e){
+        console.log(delete jObject.content);
+        console.log(jObject)
+        // let data = {
+        //   index:e.currentTarget.dataset.index,
+        //   id:j.id,
+        //   singlePrice:j.price,
+        //   num:j.foodNum ? j.foodNum : 0
+        // }
+        let data = JSON.stringify(jObject);
+        this.detailData = data;
+        wx.navigateTo({
+          url:'./foodsPackageDetail?detailData=' + data,
+        })
+
+        //将数据保存到全局变量上
+        // wepy.$instance.globalData.deliverData = {
+        //   tableNum:this.globalDataNum.tableNum,
+        //   foodNum:this.globalDataNum.eatFoodNum,
+        //   orderGoods:this.orderGoods,
+        //   price:this.price,
+        //   num:this.count
+        // };
+      },
+      // 添加商品
+      add(jObject,l,m){
+        let that = this;
+        this.deliverData = wx.getStorageSync('deliverData');
+        this.orderGoods = this.deliverData.orderGoods ? this.deliverData.orderGoods : [];
+        console.log(this.deliverData);
+        this.takeaways[l].goods[m].foodNum++;
+        if(this.deliverData){
+          console.log("deliverData存在");
+          console.log(this.deliverData.num)
+          this.deliverData.num = Number(++this.deliverData.num);
+          var fixed = (jObject.price/100)*1;
+          this.deliverData.price = Number(this.deliverData.price) + Number(fixed);
+          this.deliverData.price = this.keepTwoDecimalFull(this.deliverData.price);
+        }else{
+          console.log("deliverData不存在");
+          this.count ++;
+          var fixed = (jObject.price/100)*1;
+          this.price1 += (fixed*1);    //获取商品价格
+          this.price = this.keepTwoDecimalFull(Number(this.price1));
+        }
+        let flag = false;
+        let index = -1;
+        if(this.orderGoods.length == 0){
+          jObject.foodNum = 1;
+          this.orderGoods.push(jObject)
+        }else{
+          for(var i = 0;i<this.orderGoods.length;i++){
+            if (this.orderGoods[i].id == jObject.id) {
+              flag = true
+              index = i
+              // return;
+            }
+          }
+          if (flag) {
+            this.orderGoods[index].foodNum++
+          }else {
+            jObject.foodNum = 1;
+            this.orderGoods.push(jObject);
+          }
+        }
+        this.takeaways.forEach((item,index)=>{
+          item.goods.forEach((item1,index1)=>{
+            if(item1.id == jObject.id){
+              item1.foodNum;
+              this.$apply();
+            }
+          })
+        })
+        let data1 = {
+          tableNum:this.globalDataNum.tableNum,
+          foodNum:this.globalDataNum.eatFoodNum,
+          orderGoods:this.orderGoods,
+          price:this.deliverData ? this.deliverData.price : this.price,
+          num:this.deliverData ? this.deliverData.num : this.count
+        }
+        wx.setStorage({
+          key: 'deliverData',
+          data:data1
+        })
+        console.log(this.orderGoods)
+      },
+      // 减少商品
+      reduce(jObject,l,m){
+        // console.log(jObject)
+        if(this.takeaways[l].goods[m].foodNum <= 0){
+          this.takeaways[l].goods[m].foodNum = 0;
+        }else{
+          this.takeaways[l].goods[m].foodNum--;
+        }
+        this.count --;
+        var fixed = (jObject.price/100)*1;
+        this.price1 -= (fixed*1);    //获取商品价格
+        this.price = this.keepTwoDecimalFull(Number(this.price1));
+        let flag = false;
+        let index = -1;
+        for(var j = 0;j<this.orderGoods.length;j++){
+          if (this.orderGoods[j].id == jObject.id) {
+            flag = true
+            index = j
+            // return;
+          }
+        }
+        console.log(index);
+        if (flag) {
+          if(this.orderGoods[index].foodNum <= 1){
+            console.log("删除这一项")
+            this.orderGoods.splice(index,1)
+            return;
+          }else{
+            this.orderGoods[index].foodNum--;
+          }
+        }else {
+          // jObject.foodNum = 1;
+          // this.orderGoods.push(jObject);
+        }
+        console.log(this.orderGoods);
+      },
+      // 添加商品
+      // add(jObject,i,j,e){
+      //   console.log(jObject);
+      //   this.takeaways[i].goods[j].foodNum++;
+      //   this.count ++;
+      //   var fixed = (this.takeaways[i].goods[j].price/100)*1;
+      //   this.price1 += (fixed*1);    //获取商品价格
+      //   this.price = this.keepTwoDecimalFull(Number(this.price1));
+      //   // console.log("cover" + jObject.cover)
+      //   if(this.orderGoods.length == 0){
+      //     // console.log("数组为空")
+      //     let orderGoodsItem = {
+      //       id:jObject.id,
+      //       num:1,
+      //       cover:jObject.cover,
+      //       singlePrice:jObject.price,
+      //       title:jObject.title
+      //     }
+      //     this.orderGoods.push(orderGoodsItem)
+      //   }else{
+      //     if(this.orderGoods[j] == undefined){
+      //       let orderGoodsItem = {
+      //         id:jObject.id,
+      //         num:1,
+      //         cover:jObject.cover,
+      //         singlePrice:jObject.price,
+      //         title:jObject.title
+      //       }
+      //       this.orderGoods.push(orderGoodsItem)
+      //     }else if(this.orderGoods[j].id){
+      //       this.orderGoods[j].num++;
+      //     }
+      //   }
+      //   // let deliverData = {
+      //   //   tableNum:this.globalDataNum.tableNum,
+      //   //   foodNum:this.globalDataNum.eatFoodNum,
+      //   //   orderGoods:this.orderGoods,
+      //   //   price:this.price,
+      //   //   num:this.count
+      //   // }
+      //   // wx.setStorage({
+      //   //   key:"deliverData",
+      //   //   data:deliverData
+      //   // })
+      // },
+      // 减少商品
+      // reduce(i,j,e){
+      //   let dataset = e.currentTarget.dataset;
+      //   if(this.takeaways[i].goods[j].foodNum<=0){
+      //     this.takeaways[i].goods[j].foodNum == 0;
+      //     this.count = this.count;
+      //   }else{
+      //     this.takeaways[i].goods[j].foodNum--;
+      //     this.count --;
+      //     var fixed = this.keepTwoDecimalFull(this.takeaways[i].goods[j].price/100);
+      //     this.price1 -= (fixed*1);    //获取商品价格
+      //     this.price = this.keepTwoDecimalFull(Number(this.price1));
+      //   }
+      //   if(this.orderGoods.length == 0){
+      //     let orderGoodsItem = {
+      //       id:dataset.id,
+      //       num:1,
+      //       cover:dataset.cover
+      //     }
+      //     this.orderGoods.push(orderGoodsItem)
+      //   }else{
+      //     if(this.orderGoods[j] == undefined){
+      //       let orderGoodsItem = {
+      //         id:dataset.id,
+      //         num:1,
+      //         cover:dataset.cover
+      //       }
+      //       this.orderGoods.push(orderGoodsItem)
+      //     }else if(this.orderGoods[j].id){
+      //       this.orderGoods[j].num--;
+      //     }
+      //   }
+      //   // wepy.$instance.globalData.deliverData = {
+      //   //   tableNum:this.globalDataNum.tableNum,
+      //   //   foodNum:this.globalDataNum.eatFoodNum,
+      //   //   orderGoods:this.orderGoods,
+      //   //   price:this.price
+      //   // };
+      //   // let deliverData = {
+      //   //   tableNum:this.globalDataNum.tableNum,
+      //   //   foodNum:this.globalDataNum.eatFoodNum,
+      //   //   orderGoods:this.orderGoods,
+      //   //   price:this.price,
+      //   //   num:this.count
+      //   // }
+      //   // wx.setStorage({
+      //   //   key:"deliverData",
+      //   //   data:deliverData
+      //   // })
+      //   // console.log(wepy.$instance.globalData.deliverData);
+      // }
+    }
+    // 计算总价的函数
+    countPrice(orderGoods){
+      orderGoods.forEach((item,index)=>{
+        this.price += Number(item.price) * Number(item.foodNum)
+      })
+      console.log(this.keepTwoDecimalFull(this.price))
+    }
+    // 保留两位小数
+    keepTwoDecimalFull(num) {
+      var result = parseFloat(num);
+      if (isNaN(result)) {
+        return false;
+      }
+      result = Math.round(num * 100) / 100;
+      var s_x = result.toString();
+      var pos_decimal = s_x.indexOf('.');
+      if (pos_decimal < 0) {
+        pos_decimal = s_x.length;
+        s_x += '.';
+      }
+      while (s_x.length <= pos_decimal + 2) {
+        s_x += '0';
+      }
+      return s_x;
+    }
+    //多人点餐调接口
+    async getMoreOrderDoneData(){
+      const url = api.apiMall + '/food/foodAdd'
+      const data = {
+        userId:this.openid,
+        deskop:this.tableNum,
+        goodData:this.orderGoods,
+        moreTotal:this.price
+      }
+      console.log(this.orderGoods)
+      await wepy.request({
+        url: url,
+        method: 'POST',
+        data: data,
+      }).then(res=>{
+        // const data = res;
+        // console.log(data)
+      })
+    }
+    // 无桌号点餐
+    async getChooseFoodData(){
+      const url = api.apiMall + '/food/show'
+      const data = {
+        merchantId:1,
+        tableNum:wepy.$instance.globalData.num.tableNum,
+        eatFoodNum:wepy.$instance.globalData.num.eatFoodNum
+      }
+      await wepy.request({
+        url: url,
+        method: 'POST',
+        data: data,
+      }).then(res=>{
+        const data = res.data.data;
+        if(res.data.code == 0){
+          data.takeaways.forEach((item, index) => {
+            for(var i in item.goods){
+              item.goods[i].foodNum = 0;
+            }
+          })
+          this.tableNum = data.tableNum;
+          this.eatFoodNum = data.eatFoodNum;
+          this.activity = data.activity;
+          this.activitysLength = data.activity.length;
+          this.catelogs = data.catelogs;
+          this.takeaways = data.takeaways;
+          this.goods = data.goods;
+          // 保存的全局变量，为了和详情页的数据联结起来
+          // console.log(this.takeaways)
+          // wepy.$instance.globalData.deliverData = {
+          //   tableNum:this.globalDataNum.tableNum,
+          //   foodNum:this.globalDataNum.eatFoodNum,
+          //   orderGoods:this.orderGoods,
+          //   price:this.price,
+          //   num:this.count
+          // };
+          // console.log("this.deliverData")
+          // console.log(wepy.$instance.globalData.deliverData);
+          this.$apply();
+        }
+      })
+    }
+    getData(){
+      // console.log(wepy.$instance.globalData.num.eatFoodNum)
+      let globalDataNum = wepy.$instance.globalData.num;
+      this.globalDataNum = globalDataNum;
+      // console.log(globalDataNum)
+      this.tableNum = globalDataNum.tableNum;
+      this.foodNum = globalDataNum.foodNum;
+    }
+    onLoad(){
+      let that = this;
+      this.getData();
+      this.getChooseFoodData();
+      wx.showToast({
+        title: '正在加载',
+        icon: 'loading',
+        duration: 1500
+      })
+      // console.log(this.takeaways);
+      this.eatFoodNum = wepy.$instance.globalData.num.eatFoodNum;
+      this.tableNum = wepy.$instance.globalData.num.tableNum;
+      this.logoImg = wepy.$instance.globalData.logoImg;
+      wx.getStorage({
+        key: 'data',
+        success: function(res) {
+          // console.log(res.data)
+          that.socketTableNum = res.data.socketTableNum;
+          that.socketFoodNum = res.data.socketFoodNum;
+          that.$apply();
+          //判断桌号是否存在
+          if(that.socketTableNum){
+            if(that.socketFoodNum){
+              //桌号跟用餐人数都存在
+              console.log("第二个人进首页")
+              //调用接口
+            }else{
+              //桌号存在 用餐人数不存在都选择人数
+              wx.redirectTo({
+                url:'./chooseNum'
+              })
+            }
+          }else{
+            //走本地缓存 存数据
+          }
+        }
+      })
+      // 获取openid
+      wx.getStorage({
+        key: 'openid',
+        success: function(res) {
+          that.openid = res.data;
+          that.$apply();
+        }
+      })
+    }
+    onShow(){
+      let that = this;
+      this.detailNum = wepy.$instance.globalData.detailNum;
+      this.detailObject = wepy.$instance.globalData.detailObject;
+      // this.deliverData = wepy.$instance.globalData.deliverData;
+
+      if(this.deliverData){
+        this.deliverData.price = this.deliverData.price;
+        this.deliverData.count = this.deliverData.num;
+      }
+      this.takeaways.forEach((item,index)=>{
+        item.goods.forEach((item1,index1)=>{
+          if(item1.id == this.detailObject.id){
+            item1.foodNum = this.detailNum;
+          }
+        })
+      })
+      // console.log(this.deliverData)
+      wx.getStorage({
+        key: 'deliverData',
+        success: function(res) {
+          that.deliverData = res.data;
+          that.$apply();
+        }
+      })
+      this.$apply();
+
+    }
+
+  }
+</script>

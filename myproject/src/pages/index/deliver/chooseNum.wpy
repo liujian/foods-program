@@ -1,0 +1,416 @@
+<style type="less">
+  page{
+    height:100%;
+    background-color:#f3f3f3;
+  }
+  /*头部*/
+  .deliver-wrap{
+    width:100%;
+    height:200rpx;
+    background-color:#ffd265;
+    border:1rpx solid #ffd265;
+    box-sizing:border-box;
+    .deliver-head-wrap{
+      width:710rpx;
+      height:250rpx;
+      padding-bottom:15rpx;
+      box-sizing:border-box;
+      background-color:#fff;
+      border-radius:6rpx;
+      position:relative;
+      margin:80rpx auto 0;
+      .deliver-head{
+        width:650rpx;
+        height:120rpx;
+        margin:auto;
+        position:relative;
+        image{
+          display:inline-block;
+          width:180rpx;
+          height:180rpx;
+          position:absolute;
+          top:-60rpx;
+          left:0;
+          right:0;
+          margin:auto;
+        }
+      }
+      .name{
+        width:100%;
+        color:#333;
+        font-size:34rpx;
+        text-align:center;
+        margin-top:45rpx;
+      }
+    }
+  }
+  /*选择就餐人数样式*/
+  .chooseNum-wrap{
+    width:710rpx;
+    height:675rpx;
+    background-color:#fff;
+    margin:20rpx auto 0;
+    padding:25rpx 20rpx 20rpx 20rpx;
+    box-sizing:border-box;
+    .sold-list-head{
+      width:100%;
+      height:80rpx;
+      /*background-color:cyan;*/
+      margin:0 auto;
+      image{
+        display:inline-block;
+        width:6rpx;
+        height:40rpx;
+        background-color:#ffd265;
+        margin-top:20rpx;
+        margin-right:20rpx;
+      }
+      view{
+        display:inline-block;
+        height:100%;
+        line-height:80rpx;
+        font-size:30rpx;
+        font-weight:bold;
+        color:#333;
+        vertical-align: top;
+      }
+    }
+    /*选择具体人数*/
+    .num-people{
+      width:100%;
+      height:auto;
+      background-color:#fff;
+      margin-top:15rpx;
+      display:flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      .num{
+        width:152rpx;
+        height:70rpx;
+        background-color:#f3f3f3;
+        line-height:70rpx;
+        text-align:center;
+        color:#333;
+        font-size:30rpx;
+        margin-bottom:20rpx;
+      }
+      .num-active{
+        background-color:#ffd265;
+      }
+    }
+    textarea{
+      display:block;
+      width:100%;
+      height:150rpx;
+      background-color:#f3f3f3;
+      font-size:28rpx;
+      color:#333;
+      padding:15rpx;
+      box-sizing:border-box;
+      margin-top:20rpx;
+    }
+  }
+  .chooseBtn{
+    width: 710rpx;
+    height: 98rpx;
+    margin:36rpx auto 0;
+    background-color: #ffd265;
+    box-shadow: 0px 3px 9px 0px
+    rgba(0, 0, 0, 0.08);
+    border-radius: 49px;
+    font-size: 36rpx;
+    text-align:center;
+    line-height:98rpx;
+    color: #333333;
+  }
+  /*遮罩*/
+  .commodity_screen {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #000;
+    background: rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    z-index: 1000;
+    color: #fff;
+    .input-num-wrap{
+      width:500rpx;
+      height:400rpx;
+      border-radius:10rpx;
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-50%);
+      .input-num-content-head{
+        width:100%;
+        height:98rpx;
+        background-color: #ffd265;
+        border-radius:10rpx 10rpx 0 0;
+        font-size:32rpx;
+        color:#333;
+        text-align:center;
+        line-height:98rpx;
+      }
+      .input-num-content-input{
+        width:100%;
+        height:185rpx;
+        background-color:#fff;
+        border-radius:0 0 10rpx 10rpx;
+        padding:50rpx 65rpx;
+        box-sizing:border-box;
+        input{
+          width:370rpx;
+          height:84rpx;
+          background-color:#f3f3f3;
+          color:#333;
+          text-align:center;
+        }
+      }
+      .input-num-btn{
+        width:100%;
+        height:98rpx;
+        margin-top:20rpx;
+        view{
+          float:left;
+          width:240rpx;
+          height:98rpx;
+          background-color:#fff;
+          border-radius:10rpx;
+          color:#333;
+          font-size:30rpx;
+          text-align:center;
+          line-height:98rpx;
+        }
+        view:last-child{
+          float:right;
+          background-color: #ffd265;
+        }
+      }
+    }
+  }
+  .num-eat-food{
+    float:right;
+  }
+</style>
+<template>
+  <view id="chooseNum" style="width:100%;height:100%;">
+    <view style="width:100%;height:330rpx;">
+      <view class="deliver-wrap">
+        <!--头部-->
+        <view class="deliver-head-wrap">
+          <view class="deliver-head">
+            <image src="{{logoImg}}"></image>
+          </view>
+          <view class="name">{{title}}</view>
+        </view>
+      </view>
+    </view>
+    <!--人数盒子-->
+    <view class="chooseNum-wrap">
+      <!--title-->
+      <view class="sold-list-head">
+        <image src=""></image>
+        <view>请选择就餐人数</view>
+        <view class="num-eat-food"><text style="color:#ff2323;">{{inputEatFoodNum}}人</text> 就餐</view>
+      </view>
+      <!--选择具体人数-->
+      <view class="num-people">
+        <view class="num {{eatFoodNum == index ? 'num-active' : ''}}" wx:for="{{numData}}" wx:key="index" data-index="{{index}}" @tap.stop='choosePeopleNum({{index}})'>{{item}}</view>
+      </view>
+      <view class="sold-list-head">
+        <image></image>
+        <view>备注</view>
+      </view>
+      <textarea placeholder="禁忌口味" placeholder-style="color:#969696;" @input="tips" />
+    </view>
+    <!--底部按钮-->
+    <view class="chooseBtn" @tap="chooseFood">开始点餐</view>
+
+    <!--更多的弹出框-->
+    <view class="commodity_screen" wx:if="{{showModalStatus}}" @touchmove.stop='true'>
+      <view class="input-num-wrap">
+        <view class="input-num-content">
+          <view class="input-num-content-head">请输入点餐人数</view>
+          <view class="input-num-content-input">
+            <input type="number" @input="getEatFoodNum" value="1"/>
+          </view>
+        </view>
+        <view class="input-num-btn">
+          <view @tap="hideModal">取消</view>
+          <view @tap="sureEatFoodNum">确定</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import api from '../../../api/api'
+  import tip from '../../../utils/tip'
+  export default class ChooseNum extends wepy.page {
+    data = {
+      title:'',   //商户名
+      logoImg:'', //商户logo
+      tips:'',    //备注信息
+      inputEatFoodNum:this.inputEatFoodNum ? this.inputEatFoodNum : 1,
+      numData:['1人','2人','3人','4人','5人','6人','7人','8人','9人','10人','11人','更多'],
+      eatFoodNum:0,
+      tableNum:5
+    }
+    components = {
+    }
+    methods = {
+      // 跳转点餐页面
+      chooseFood(){
+        this.saveData();
+        wx.navigateTo({
+          url:'./deliver'
+        })
+      },
+      // 选择用餐的具体人数
+      choosePeopleNum(num){
+        if(num <= 10){
+          this.eatFoodNum = num;
+          this.socketFoodNum = this.tableNum;
+          this.inputEatFoodNum = num + 1;
+        }else{
+          if(num == 11){
+            this.show();    //遮罩出现
+          }
+        }
+        // console.log(this.title)
+        let data = {socketTableNum:'5',socketFoodNum:this.inputEatFoodNum};
+        console.log(data)
+        wx.setStorage({
+          key:"data",
+          data:data
+        })
+      },
+      // 显示遮罩
+      showModal() {
+        this.show();
+      },
+      //隐藏遮罩
+      hideModal() {
+        console.log('我点了取消');
+        // 隐藏遮罩层
+        this.hide();
+        this.inputEatFoodNum = this.eatFoodNum + 1;
+        this.eatFoodNum = this.eatFoodNum;
+        console.log('this.eatFoodNum是' + this.eatFoodNum);
+        console.log('this.inputEatFoodNum是' + this.inputEatFoodNum);
+      },
+      // 获取用餐人数
+      getEatFoodNum(e){
+        this.inputEatFoodNum = e.detail.value ? e.detail.value : 0;
+      },
+      // 获取备注信息
+      tips(e){
+        // console.log(e.detail.value)
+        this.tips = e.detail.value;
+      },
+      // 点击确定
+      sureEatFoodNum(){
+        if(this.inputEatFoodNum == ''){
+
+        }else if(this.inputEatFoodNum < 11){
+          this.eatFoodNum = this.inputEatFoodNum - 1;
+        }else if(this.inputEatFoodNum >= 11){
+          this.eatFoodNum = 11;
+        }
+        let data = {socketTableNum:'',socketFoodNum:this.inputEatFoodNum};
+        console.log(data)
+        wx.setStorage({
+          key:"data",
+          data:data
+        })
+        this.hide();
+      }
+    }
+
+    // 请求数据
+    async getData(){
+      const url = api.apiMall + '/food/index';
+      const data = {
+        merchantId:1
+      }
+      await wepy.request({
+        url: url,
+        method: 'POST',
+        data: data,
+      }).then(res=>{
+        const data = res.data.data;
+        // console.log(data)
+        if(res.data.code == 0){
+          this.logoImg = data.cover_url;
+          wepy.$instance.globalData.logoImg = data.cover_url;
+          this.title = data.title;
+          this.$apply();
+        }
+      })
+    }
+    // 存储用餐人数和备注信息
+    saveData(){
+      wepy.$instance.globalData.num = {
+        eatFoodNum:this.inputEatFoodNum,
+        tableNum:5,
+        tips:this.tips,
+        // socketTableNum:this.tableNum
+      };
+    }
+    // 显示隐藏遮罩
+    hide(){
+      // 隐藏遮罩层
+      var animation = wx.createAnimation({
+        duration: 200,
+        timingFunction: "linear",
+        delay: 0
+      })
+      this.animation = animation
+      animation.translateY(300).step()
+      this.setData({
+        animationData: animation.export(),
+      })
+      setTimeout(function () {
+        animation.translateY(0).step()
+        this.setData({
+          animationData: animation.export(),
+          showModalStatus: false
+        })
+      }.bind(this), 200)
+    }
+    show(){
+      // 显示遮罩层
+      var animation = wx.createAnimation({
+        duration: 200,
+        timingFunction: "linear",
+        delay: 0
+      })
+      this.animation = animation
+      animation.translateY(300).step()
+      this.setData({
+        animationData: animation.export(),
+        showModalStatus: true
+      })
+      setTimeout(function () {
+        animation.translateY(0).step()
+        this.setData({
+          animationData: animation.export()
+        })
+      }.bind(this), 200)
+    }
+    onRoute(){
+      this.getData()
+    }
+    onLoad(){
+      //将桌号存到localstorage
+      let data = {socketTableNum:'',socketFoodNum: this.eatFoodNum ? this.eatFoodNum : 1};
+      wx.setStorage({
+        key:"data",
+        data:data
+      })
+    }
+  }
+</script>

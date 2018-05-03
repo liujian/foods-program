@@ -1,0 +1,78 @@
+{
+	"description": "A WePY project",
+	"setting": {
+		"urlCheck": true,
+		"es6": false,
+		"postcss": false,
+		"minified": false,
+		"newFeature": true
+	},
+	"compileType": "miniprogram",
+	"appid": "wx48215e8fd3410821",
+	"projectname": "myproject",
+	"miniprogramRoot": "./dist",
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"list": []
+		},
+		"miniprogram": {
+			"current": -1,
+			"list": [
+				{
+					"id": -1,
+					"name": "开发票",
+					"pathName": "pages/index/deliver/billList",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "订单完成",
+					"pathName": "pages/index/deliver/orderDone",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "外卖首页",
+					"pathName": "pages/index/takeOut/deliver",
+					"query": ""
+				},
+				{
+					"id": 3,
+					"name": " 我的订单",
+					"pathName": "pages/index/takeOut/order",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "地址列表",
+					"pathName": "pages/index/takeOut/addressList",
+					"query": ""
+				},
+				{
+					"id": 5,
+					"name": "添加地址",
+					"pathName": "pages/index/takeOut/addAddress",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "退款原因",
+					"pathName": "pages/mall/mall",
+					"query": ""
+				}
+			]
+		}
+	}
+}

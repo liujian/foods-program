@@ -1,0 +1,520 @@
+<style type="less">
+  page{
+    width:100%;
+    height:100%;
+    background-color:#f3f3f3;
+  }
+  .sold-list-head{
+    width:100%;
+    height:80rpx;
+    /*background-color:cyan;*/
+    padding :0 20rpx;
+    box-sizing:border-box;
+    .image{
+      display:inline-block;
+      width:6rpx;
+      height:40rpx;
+      background-color:#ffd265;
+      margin-top:20rpx;
+      margin-right:20rpx;
+    }
+    view{
+      display:inline-block;
+      height:100%;
+      line-height:80rpx;
+      font-size:30rpx;
+      color:#333;
+      vertical-align: top;
+    }
+  }
+  /*头部*/
+  .deliver-wrap{
+    width:100%;
+    height:200rpx;
+    background-color:#ffd265;
+    border:1rpx solid #ffd265;
+    box-sizing:border-box;
+    .deliver-head-wrap{
+      width:710rpx;
+      height:275rpx;
+      padding-bottom:15rpx;
+      box-sizing:border-box;
+      background-color:#fff;
+      border-radius:6rpx;
+      position:relative;
+      margin:160rpx auto 0;
+      .deliver-head{
+        width:670rpx;
+        height:auto;
+        margin:auto;
+        image{
+          display:inline-block;
+          width:140rpx;
+          height:140rpx;
+          /*background-color:yellow;*/
+          margin-top:21rpx;
+        }
+        .user-name{
+          display:inline-block;
+          width:auto;
+          height:140rpx;
+          vertical-align: top;
+          font-size:36rpx;
+          color:#333;
+          line-height:180rpx;
+          margin-left:30rpx;
+        }
+      }
+      .table-num-wrap{
+        width:100%;
+        height:64rpx;
+        /*background-color:yellow;*/
+        display:inline-block;
+        vertical-align: top;
+        margin-top:15rpx;
+        view{
+          width:33.333333%;
+          display:inline-block;
+          vertical-align: top;
+          font-size:34rpx;
+          color:#333;
+          text-align:center;
+          line-height:64rpx;
+        }
+      }
+    }
+    .order-done-wrap{
+      width:710rpx;
+      height:120rpx;
+      background-color:#fff;
+      position:absolute;
+      top:20rpx;
+      left:0;
+      right:0;
+      margin:auto;
+      padding:0 20rpx;
+      box-sizing:border-box;
+      .order{
+        float:left;
+        height:100%;
+        line-height:120rpx;
+        font-size:34rpx;
+        color:#333;
+      }
+      .integral{
+        float:right;
+        width: 220rpx;
+        height: 70rpx;
+        background-color: #ffd265;
+        border-radius: 35rpx;
+        font-size:30rpx;
+        color:#333;
+        text-align:center;
+        line-height:70rpx;
+        margin-top:25rpx;
+      }
+    }
+  }
+  .box{
+    width:710rpx;
+    height:auto;
+    margin:180rpx auto 135rpx;
+    border-top:2rpx solid #fff;
+  }
+  /*订单信息*/
+  .order-info-wrap{
+    width:710rpx;
+    height:auto;
+    background-color:#fff;
+    margin:20rpx auto;
+  }
+  .more-order-wrap{
+    width:100%;
+    height:120rpx;
+    background-color:#fff;
+    position:fixed;
+    bottom:0;
+    left:0;
+    padding:13rpx 20rpx;
+    box-sizing:border-box;
+    /*display:none;*/
+    .more-order{
+      width:710rpx;
+      height:94rpx;
+      background-color: #ffd265;
+      border-radius: 42rpx;
+      font-size: 36rpx;
+      text-align:center;
+      line-height:94rpx;
+      color: #333333;
+    }
+  }
+  .billing{
+    width:100%;
+    height:80rpx;
+    overflow:hidden;
+    background-color:#fff;
+  }
+  .billing-active{
+    height:auto;
+    background-color:#fff;
+  }
+  .sold-list-head{
+    width:100%;
+    height:80rpx;
+    /*background-color:cyan;*/
+    padding :0 20rpx;
+    box-sizing:border-box;
+    .image{
+      display:inline-block;
+      width:6rpx;
+      height:40rpx;
+      background-color:#ffd265;
+      margin-top:20rpx;
+      margin-right:20rpx;
+    }
+    view{
+      display:inline-block;
+      height:100%;
+      line-height:80rpx;
+      font-size:30rpx;
+      color:#333;
+      vertical-align: top;
+    }
+  }
+  .order-wrap-wrap{
+    width:100%;
+    height:auto;
+    background-color:#fff;
+    pdding-bottom:30rpx;
+    border-radius:6rpx;
+    box-sizing:border-box;
+  }
+  .user-info-model-wrap{
+    width:656rpx;
+    height:auto;
+    padding-left:40rpx;
+    box-sizing:border-box;
+  }
+  .order-wrap{
+    width:100%;
+    height:auto;
+    /*订单列表*/
+    .user-info-wrap{
+      width:656rpx;
+      height:auto;
+      .user-info{
+        width:100%;
+        height:80rpx;
+        background-color:#f3f3f3;
+        font-size:32rpx;
+        color:#333;
+        padding:0 7rpx;
+        box-sizing:border-box;
+        .user-profile{
+          display:inline-block;
+          width:70rpx;
+          height:70rpx;
+          background-color:red;
+          border-radius:50%;
+          margin-top:5rpx;
+          margin-right:30rpx;
+        }
+        .user-name{
+          display:inline-block;
+          height:100%;
+          vertical-align: top;
+          line-height:80rpx;
+        }
+        .food-num{
+          display:inline-block;
+          float:right;
+          vertical-align:top;
+          height:100%;
+          line-height:80rpx;
+        }
+      }
+      .foods-list{
+        width:100%;
+        height:140rpx;
+        /*background-color:green;*/
+        margin-top:40rpx;
+        .foods-pic{
+          display:inline-block;
+          width:140rpx;
+          height:140rpx;
+          /*background-color:aqua;*/
+        }
+        .foods-pic-desc{
+          float:right;
+          vertical-align: top;
+          width:475rpx;
+          height:100%;
+          /*background-color:yellow;*/
+          padding-right:7rpx;
+          box-sizing:border-box;
+          position:relative;
+          .foods-name{
+            height:36rpx;
+            view{
+              display:block;
+              font-size:32rpx;
+              color:#333;
+              float:left;
+            }
+            .price{
+              float:right;
+              color:#ff2323;
+            }
+          }
+          .num{
+            font-size:32rpx;
+            color:#969696;
+            text-align:left;
+            position:absolute;
+            bottom:0;
+            left:0;
+          }
+        }
+      }
+    }
+  }
+  .line{
+    width:670rpx;
+    height:2rpx;
+    margin:0 auto;
+    background-color:#f3f3f3;
+    margin-top:40rpx;
+  }
+
+  /*支付方式*/
+  .pay-way-wrap{
+    width:100%;
+    height:auto;
+    background-color:#fff;
+    margin-top:20rpx;
+    border-radius:6rpx;
+  }
+  .balance{
+    color:#ff2323;
+  }
+  wx-switch-input::after{
+    width: 40rpx !important;
+    height: 36rpx !important;
+  }
+  .sold-list-head .payWayStyleActive{
+    color:#969696;
+  }
+</style>
+<template>
+  <view id="order-done">
+    <!--头部-->
+    <view style="width:100%;height:274rpx;">
+      <view class="deliver-wrap">
+        <!--头部-->
+        <view class="deliver-head-wrap">
+          <view class="deliver-head">
+            <image src="{{userInfo.avatarUrl}}"></image>
+            <view class="user-name">
+              <text>{{userInfo.nickName}}</text>
+            </view>
+          </view>
+          <view class="table-num-wrap">
+            <view>桌号： {{deliverData.tableNum}}</view>
+            <view class="table-num">份数： {{payPeopleMsg.sums}}</view>
+            <view class="user-num">人数： {{deliverData.foodNum}}人</view>
+          </view>
+        </view>
+        <!--订单已完成-->
+        <view class="order-done-wrap" style="border-radius:6rpx;">
+          <view class="order">订单已完成</view>
+          <view class="integral">评价获取积分</view>
+        </view>
+      </view>
+    </view>
+    <view class="box" style="border-radius: 6rpx;">
+      <!--<order></order>-->
+      <view style="" class="order-wrap-wrap">
+        <!--一个人的订单-->
+        <view class="order-wrap">
+          <!--title-->
+          <view class="sold-list-head">
+            <view class="image"></view>
+            <view>订单商品</view>
+          </view>
+          <!--订单商品列表-->
+          <view class="user-info-model-wrap" style="">
+            <view class="user-info-wrap">
+              <view class="user-info">
+                <image class="user-profile" src="../../../images/index/logo.png"></image>
+                <text class="user-name">张大妮</text>
+                <text class="food-num">共2份</text>
+              </view>
+              <!--点的餐食列表-->
+              <view class="foods-list" wx:for="{{payPeopleMsg.goods}}" wx:key="{{index}}" wx:for-item="item">
+                <image class="foods-pic" src="{{item.cover}}"></image>
+                <view class="foods-pic-desc">
+                  <view class="foods-name">
+                    <view>{{item.title}}</view>
+                    <view class="price">￥{{item.price/100}}</view>
+                  </view>
+                  <view class="num">x {{item.nums}}</view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <!--分割线-->
+        <view class="line"></view>
+        <!--优惠信息-->
+        <!--title-->
+        <!--<view class="sold-list-head">-->
+        <!--<view class="image"></view>-->
+        <!--<view style="font-weight:bold;">优惠券</view>-->
+        <!--<view style="display:inline-block;float:right;color:#969696;" @tap='showModal'>-->
+        <!--选择优惠券-->
+        <!--<image src="../../../images/index/arrow-right.png" style="display:inline-block;width:16rpx;height:27rpx;margin-top:6rpx;"></image>-->
+        <!--</view>-->
+        <!--</view>-->
+        <!--选择优惠-->
+        <view class="sold-list-head">
+          <view class="image"></view>
+          <view style="font-weight:bold;">选择优惠</view>
+          <view style="display:inline-block;float:right;">{{promotion.message ? promotion.message : '无'}}</view>
+        </view>
+        <!--备注-->
+        <view class="sold-list-head">
+          <view class="image"></view>
+          <view style="font-weight:bold;">备注</view>
+          <view style="display:inline-block;float:right;color:#333;">{{tips}}</view>
+        </view>
+        <!--分割线-->
+        <view style="width:670rpx;height:2rpx;margin:0 auto;background-color:#f3f3f3;"> </view>
+        <!--优惠规则-->
+        <view class="sold-list-head">
+          <view style="font-weight:bold;" style="color:#969696">优惠规则</view>
+          <view style="display:inline-block;float:right;color:#333;">
+            <view style="font-size:26rpx;color:#969696;margin-right:15rpx;">已优惠￥6</view>
+            <view class="price" style="font-size:36rpx;font-weight:bold;">
+              <text>总计：</text>
+              <text style="color:#ff2323;">￥{{deliverData.price}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="pay-way-wrap">
+        <!--title-->
+        <view class="sold-list-head">
+          <view class="image"></view>
+          <view style="font-weight:bold;">支付方式</view>
+          <view style="display:inline-block;float:right;">{{payWay}}</view>
+        </view>
+        <view style="width:670rpx;height:2rpx;margin:0 auto;background-color:#f3f3f3;"></view>
+        <!--=================================-->
+        <!--开票信息-->
+        <view class="{{billing ? 'billing':'billing-active'}}">
+          <view class="sold-list-head">
+            <view class="image"></view>
+            <view style="font-weight:bold;">开票信息</view>
+            <view style="display:inline-block;float:right;">
+              <switch color="#ffd265" bindchange="switch1Change"/>
+            </view>
+          </view>
+          <!--开票信息-->
+          <view class="sold-list-head" style="padding-left:48rpx;">
+            <view style="">您还未添加任何发票信息</view>
+            <view style="display:inline-block;float:right;color:#969696;" @tap="addBill">
+              点击新增
+              <image src="../../../images/index/arrow-right.png" style="display:inline-block;width:16rpx;height:27rpx;"></image>
+            </view>
+          </view>
+        </view>
+      </view>
+      <!--订单信息-->
+      <view class="order-info-wrap" style="border-radius: 6rpx;">
+        <!--title-->
+        <view class="sold-list-head">
+          <view class="image"></view>
+          <view style="font-weight:bold;">订单号码</view>
+          <view style="display:inline-block;margin-left:40rpx;">{{serial}}</view>
+        </view>
+        <view class="sold-list-head">
+          <view class="image"></view>
+          <view style="font-weight:bold;">订单时间</view>
+          <view style="display:inline-block;margin-left:40rpx;">{{dateline}}</view>
+        </view>
+      </view>
+    </view>
+    <!--底部按钮-->
+    <view class="more-order-wrap">
+      <view class="more-order">再来一单</view>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import api from '../../../api/api'
+  import order from '../../../components/index/order'
+  export default class Orderdone extends wepy.page {
+    data = {
+      billing:true,
+      deliverData:null,
+      payPeopleMsg:null,
+      tips:'无',      //备注
+      payWay:'',    //支付方式
+      serial:'',    //订单编号
+      dateline:'', //下单时间
+      promotion:null,
+      userInfo:null
+    }
+    components = {
+      order:order
+    }
+    methods = {
+      // 发票开关
+      switch1Change(e){
+        console.log('switch1 发生 change 事件，携带值为', e.detail.value)
+        this.billing = !this.billing;
+      },
+    }
+    // 请求订单完成数据
+    async getOrderDoneData(){
+      const url = api.apiMall + '/food/orderShow'
+      const data = {
+        orderId:this.orderId
+      }
+      await wepy.request({
+        url: url,
+        method: 'POST',
+        data: data,
+      }).then(res=>{
+        const data = res.data.data;
+        // console.log(data)
+        if(res.data.code == 0){
+          this.payPeopleMsg = data;
+          this.serial = data.serial;
+          this.dateline = data.dateline;
+          this.promotion = data.promotion
+          this.$apply();
+        }
+      })
+    }
+    onLoad(){
+      let that = this;
+      //获取个人信息
+      wx.getStorage({
+        key: 'userInfo',
+        success: function(res) {
+          that.userInfo = res.data;
+          that.$apply();
+        }
+      })
+      this.orderId = wepy.$instance.globalData.orderId;
+      this.deliverData = wepy.$instance.globalData.deliverData;
+      this.tips = wepy.$instance.globalData.num.tips;
+      this.getOrderDoneData();
+      this.payWay = wepy.$instance.globalData.payWay;
+      // console.log(this.orderId)
+    }
+  }
+</script>

@@ -1,0 +1,110 @@
+<style type="less">
+  .pay-way-wrap{
+    width:100%;
+    height:auto;
+    background-color:#fff;
+    margin-top:20rpx;
+    border-radius:6rpx;
+  }
+  .balance{
+    color:#ff2323;
+  }
+  wx-switch-input::after{
+    width: 40rpx !important;
+    height: 36rpx !important;
+  }
+  .sold-list-head .payWayStyleActive{
+    color:#969696;
+  }
+ .billing{
+    width:100%;
+    height:80rpx;
+    overflow:hidden;
+  }
+  .billing-active{
+    height:auto;
+  }
+</style>
+<template>
+  <view id="pay-way">
+    <view class="pay-way-wrap">
+      <!--title-->
+      <view class="sold-list-head">
+        <view class="image"></view>
+        <view style="font-weight:bold;">支付方式</view>
+      </view>
+      <!--会员卡和微信支付-->
+      <view class="sold-list-head" style="padding-left:48rpx;" wx:for="{{payWayInfo}}" wx:key="index">
+        <view class="{{payWayStyleActive == index ? '' : 'payWayStyleActive'}}">{{payWayInfo[index].payWay}}</view>
+        <view style="display:inline-block;float:right;">
+          <text style="margin-right:15rpx;vertical-align:top;display:inline-block;" class="{{payWayStyleActive == index ? 'balance' : 'payWayStyleActive'}}">{{payWayInfo[index].balance}}</text>
+          <image data-index="{{index}}" @tap="payWayActive" style="display:inline-block;width:33rpx;height:33rpx;border-radius:50%;margin-top:23rpx;" src="{{payWayActive == index ? '../../../images/index/right-active.png' : '../../../images/index/right.png'}}"></image>
+        </view>
+      </view>
+      <!--微信支付-->
+      <!--<view class="sold-list-head" style="padding-left:48rpx;">-->
+        <!--<view style="">微信支付</view>-->
+        <!--<view style="display:inline-block;float:right;">-->
+          <!--<image style="display:block;width:33rpx;height:33rpx;border-radius:50%;margin-top:23rpx;" src="../../../images/index/right-active.png"></image>-->
+        <!--</view>-->
+      <!--</view>-->
+      <!--分割线-->
+      <view style="width:670rpx;height:2rpx;margin:0 auto;background-color:#f3f3f3;margin-top:25rpx;"> </view>
+      <!--=================================-->
+      <!--开票信息-->
+      <view class="{{billing ? 'billing':'billing-active'}}">
+        <view class="sold-list-head">
+          <view class="image"></view>
+          <view style="font-weight:bold;">开票信息</view>
+          <view style="display:inline-block;float:right;">
+            <switch color="#ffd265" bindchange="switch1Change"/>
+          </view>
+        </view>
+        <!--开票信息-->
+        <view class="sold-list-head" style="padding-left:48rpx;">
+          <view style="">您还未添加任何发票信息</view>
+          <view style="display:inline-block;float:right;color:#969696;" @tap="addBill">
+            点击新增
+            <image src="../../../images/index/arrow-right.png" style="display:inline-block;width:16rpx;height:27rpx;"></image>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+
+  export default class Payway extends wepy.component{
+    data = {
+      //支付方式
+      payWayInfo:[{
+        'payWay': '会员卡支付(推荐)',
+        'balance': '余额：￥450.00'
+      },{
+        'payWay': '微信支付',
+        'balance': ''
+      }],
+      payWayActive:1,
+      payWayStyleActive:1,
+      billing:true
+    }
+    methods = {
+      payWayActive(e){
+         this.payWayActive = e.currentTarget.dataset.index;
+         this.payWayStyleActive = e.currentTarget.dataset.index;
+      },
+      // 发票开关
+      switch1Change(e){
+        console.log('switch1 发生 change 事件，携带值为', e.detail.value)
+        this.billing = !this.billing;
+      },
+      //跳转开票页
+      addBill(){
+        wx.navigateTo({
+          url:'../../index/deliver/addBill'
+        })
+      }
+    }
+  }
+</script>

@@ -1,0 +1,17 @@
+<style type="less">
+
+</style>
+<template>
+  <view class="first">
+    这是活动页面
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+
+  export default class New extends wepy.page {
+    data = {}
+    components = {}
+    methods = {}
+  }
+</script>

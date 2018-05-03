@@ -1,0 +1,209 @@
+<style type="less">
+  page{
+    width:100%;
+    height:100%;
+    background-color:#f3f3f3;
+  }
+  .orer-list-wrap{
+    width:710rpx;
+    height:auto;
+    background-color:#fff;
+    margin:20rpx auto;
+    padding: 0 20rpx;
+    box-sizing:border-box;
+  }
+  .sold-list-head{
+    width:100%;
+    height:80rpx;
+    /*background-color:cyan;*/
+    border-bottom:2rpx solid #f3f3f3;
+    image{
+      display:inline-block;
+      width:6rpx;
+      height:40rpx;
+      background-color:#ffd265;
+      margin-top:20rpx;
+      margin-right:20rpx;
+    }
+    view{
+      display:inline-block;
+      height:100%;
+      line-height:80rpx;
+      font-size:30rpx;
+      font-weight:bold;
+      color:#333;
+      vertical-align: top;
+    }
+  }
+  /*订单的主要内容*/
+  .order-content-wrap{
+    height:290rpx;
+    border-bottom:2rpx solid #f3f3f3;
+    margin-top:38rpx;
+    padding-bottom:30rpx;
+    box-sizing:border-box;
+    .shop-name-wrap{
+      height:60rpx;
+      view{
+        float:left;
+        font-size:32rpx;
+        color:#333;
+      }
+    }
+    .order-status{
+      float:right;
+      font-size:28rpx;
+    }
+    .profile{
+      display:inline-block;
+      width:120rpx;
+      height:120rpx;
+    }
+    .order{
+      display:inline-block;
+      float:right;
+      vertical-align: top;
+      width:75%;
+      height:auto;
+    }
+    .order-time{
+      float:left;
+      color: #969696;
+      font-size:22rpx;
+      margin-bottom:30rpx;
+    }
+    .comment{
+      height:60rpx;
+      color:#333;
+      font-size:28rpx;
+      view{
+        float:right;
+        margin-left:40rpx;
+        vertical-align: top;
+        width: 150rpx;
+        height: 60rpx;
+        background-color: #ffffff;
+        border-radius: 6rpx;
+        border: solid 2rpx #ffd265;
+        text-align:center;
+        line-height:60rpx;
+      }
+      .more-order{
+        background-color: #ffd265;
+      }
+    }
+  }
+</style>
+<template>
+  <view id="order-list">
+    <!--<view class="orer-list-wrap">-->
+      <!--<view class="sold-list-head">-->
+        <!--<image src=""></image>-->
+        <!--<view>最新订单</view>-->
+      <!--</view>-->
+      <!--<view class="order-content-wrap">-->
+        <!--<view class="shop-name-wrap">-->
+          <!--<view>{{mostNewOrder.serial}}</view>-->
+          <!--<view class="order-status" style="float:right;" wx:if="{{mostNewOrder.status == 1}}">已完成</view>-->
+        <!--</view>-->
+        <!--<image class="profile" src="{{mostNewOrder.good.cover}}"></image>-->
+        <!--<view class="order">-->
+          <!--<view class="shop-name-wrap">-->
+            <!--<view>{{mostNewOrder.good.title}}等{{mostNewOrder.count}}件商品</view>-->
+          <!--</view>-->
+          <!--<view style="width:100%;height:30rpx;">-->
+            <!--<view class="order-time">{{mostNewOrder.dateline}}</view>-->
+            <!--<view class="order-status">￥{{mostNewOrder.total/100}}</view>-->
+          <!--</view>-->
+
+        <!--</view>-->
+        <!--<view class="comment">-->
+          <!--<view class="more-order">再来一单</view>-->
+          <!--<view @tap="comment" data-id="{{mostNewOrder.good.id}}">我要评价</view>-->
+        <!--</view>-->
+      <!--</view>-->
+    <!--</view>-->
+
+    <!--全部订单-->
+    <view style="width:710rpx;height:auto;margin:auto;background-color:#fff;">
+      <view class="orer-list-wrap">
+        <view class="sold-list-head">
+          <image></image>
+          <view>全部订单</view>
+        </view>
+        <view class="order-content-wrap" data-id="{{item.id}}" wx:for="{{orderList}}" wx:for-item="item" wx:key="index" @tap="orderDetail">
+          <view class="shop-name-wrap">
+            <view>订单编号: {{item.serial}}</view>
+            <view class="order-status" style="float:right;" wx:if="{{item.status == 1}}">已完成</view>
+          </view>
+          <image class="profile" src="{{item.good.cover}}"></image>
+          <view class="order">
+            <view class="shop-name-wrap">
+              <view>{{item.good.title}}等{{item.count}}件商品</view>
+            </view>
+            <view style="width:100%;height:30rpx;">
+              <view class="order-time">{{item.dateline}}</view>
+              <view class="order-status">￥{{item.total/100}}</view>
+            </view>
+
+          </view>
+          <view class="comment">
+            <view class="more-order">再来一单</view>
+            <view wx:if="{{item.status == 1}}" @tap="comment" data-id="{{item.id}}">我要评价</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import api from '../../../api/api'
+  export default class New extends wepy.page {
+    config = {
+      navigationBarTitleText: '堂食订单',
+    }
+    data = {
+      orderList:null,
+      mostNewOrder:null
+    }
+    components = {
+    }
+    methods = {
+      // 跳转评价页
+      comment(e){
+        wx.navigateTo({
+          url:'./comment?orderId=' + e.currentTarget.dataset.id
+        })
+      },
+      //跳转订单详情
+      orderDetail(e){
+        console.log(e.currentTarget.dataset.id)
+        wx.navigateTo({
+          url:'./orderDetail?orderId=' + e.currentTarget.dataset.id
+        })
+      }
+    }
+    // 获取订单列表接口
+    async getOrderList(){
+      const url = api.apiMall + '/food/orderLists'
+      const data = {
+        merchantId:1,
+        userId:8,
+      }
+      await wepy.request({
+        url: url,
+        method: 'POST',
+        data: data,
+      }).then((res)=>{
+        console.log(res.data)
+        const data = res.data;
+        this.orderList = data;
+        this.$apply();
+      })
+    }
+    onLoad(){
+      this.getOrderList();
+    }
+  }
+</script>

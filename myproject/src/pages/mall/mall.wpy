@@ -1,0 +1,351 @@
+<style type="less">
+  page{
+    width:100%;
+    height:100%;
+    background-color:#f3f3f3;
+    border:2rpx solid #f3f3f3;
+    box-sizing:border-box;
+  }
+  .refund-wrap{
+    width:710rpx;
+    height:510rpx;
+    background-color:#fff;
+    margin:20rpx auto;
+    padding:20rpx;
+    box-sizing:border-box;
+    textarea{
+      width:670rpx;
+      height:220rpx;
+      background-color: #f3f3f3;
+      margin-top:40rpx;
+      font-size: 30rpx;
+      padding:20rpx;
+      box-sizing:border-box;
+    }
+  }
+  .refund-source-wrap{
+    width:720rpx;
+    height:216rpx;
+    background-color:#fff;
+    margin:0 auto;
+    padding:17rpx 20rpx;
+    box-sizing:border-box;
+  }
+  .sold-list-head{
+    width:100%;
+    height:80rpx;
+    /*background-color:cyan;*/
+    margin:0 auto;
+    text{
+      vertical-align:top;
+      display:inline-block;
+      height:100%;
+      float:right;
+      font-size:30rpx;
+      line-height:80rpx;
+    }
+    image{
+      display:inline-block;
+      width:6rpx;
+      height:40rpx;
+      margin-top:20rpx;
+      background-color:#ffd265;
+      margin-right:20rpx;
+    }
+    .title{
+      display:inline-block;
+      height:100%;
+      line-height:80rpx;
+      font-size:30rpx;
+      font-weight:bold;
+      color:#333;
+      vertical-align: top;
+    }
+    .bill-type{
+      display:inline-block;
+      vertical-align: top;
+      width:130rpx;
+      height:60rpx;
+      background-color:#f3f3f3;
+      border-radius: 6px;
+      font-size:30rpx;
+      color:#333;
+      text-align:center;
+      line-height:60rpx;
+      margin-top:10rpx;
+      margin-left:50rpx;
+    }
+    .bill-type-active{
+      background-color:#ffd265;
+    }
+    input{
+      display:inline-block;
+      vertical-align: top;
+      width:500rpx;
+      float:right;
+      height:100%;
+      line-height:80rpx;
+      font-size:30rpx;
+      font-weight:normal;
+    }
+  }
+  .tab-wrap {
+    width: 100%;
+    height: 120rpx;
+    background-color: #fff;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    .bill-btn{
+      width: 710rpx;
+      height: 84rpx;
+      background-color: #ffd265;
+      border-radius: 42rpx;
+      margin:18rpx auto 0;
+      color: #333333;
+      font-size:32rpx;
+      text-align:center;
+      line-height:84rpx;
+      position:relative;
+      image{
+        display:block;
+        width:35rpx;
+        height:35rpx;
+        position:absolute;
+        top:0;
+        bottom:0;
+        margin:auto;
+        left:220rpx;
+      }
+    }
+  }
+  /*遮罩*/
+  .commodity_screen {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #000;
+    background:rgba(0,0,0,0.5);
+    overflow: hidden;
+    z-index: 1000;
+    color: #fff;
+    .sale{
+      width:500rpx;
+      height:auto;
+      border-radius:10rpx;
+      background-color:#fff;
+      position:absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      font-size:28rpx;
+      color:#333;
+      .activity{
+        width:100%;
+        height:98rpx;
+        background-color: #ffd265;
+        border-radius: 10rpx 10rpx 0rpx 0rpx;
+        font-size:32rpx;
+        color:#333;
+        padding:0 20rpx;
+        box-sizing:border-box;
+        line-height:98rpx;
+      }
+      .view{
+        width:100%;
+        height:33rpx;
+        margin-bottom:20rpx;
+        image{
+          display:inline-block;
+          width:33rpx;
+          height:100%;
+          margin-right:24rpx;
+        }
+        view{
+          vertical-align: top;
+          display:inline-block;
+
+        }
+      }
+      .viewlast-child{
+        margin-bottom:0;
+      }
+    }
+    .close{
+      width:24rpx;
+      height:24rpx;
+      background-color:red;
+      position:absolute;
+      top:20rpx;
+      right:20rpx;
+    }
+    .cancle-btn{
+      width: 670rpx;
+      height: 98rpx;
+      background-color: #ffd265;
+      border-radius: 6rpx;
+      position:absolute;
+      bottom:20rpx;
+      left:0;
+      right:0;
+      margin:auto;
+      font-size:36rpx;
+      line-height:98rpx;
+      text-align:center;
+      color:#333;
+    }
+    .refund-reason-wrap{
+      width:670rpx;
+      height:auto;
+      background-color:#fff;
+      position:absolute;
+      bottom:138rpx;
+      left:0;
+      right:0;
+      margin:auto;
+      .refund-reason{
+        width:100%;
+        height:80rpx;
+        line-height:80rpx;
+        font-size:32rpx;
+        padding-left:20rpx;
+        box-sizing:border-box;
+        color:#969696;
+      }
+      .refund-reason-active{
+        background-color:#ececec;
+        color:#333;
+      }
+    }
+  }
+</style>
+<template>
+  <view id="refund">
+    <!--申请退款原因-->
+    <view class="refund-wrap">
+      <!--title-->
+      <view class="sold-list-head">
+        <image></image>
+        <view class="title">退款原因</view>
+      </view>
+      <!--分割线-->
+      <view style="width:670rpx;height:2rpx;margin:0 auto;background-color:#f3f3f3;margin-top:10rpx;margin-bottom:10rpx;"></view>
+      <!--title-->
+      <view class="sold-list-head">
+        <image style="background-color:#fff;"></image>
+        <view class="title" style="font-weight:normal;">请选择退款原因</view>
+        <image src="../../../images/index/arrow-right.png" @tap='showModal' style="display:inline-block;vertical-align:top;float:right;width:16rpx;height:27rpx;background-color:#fff;"></image>
+      </view>
+      <!--分割线-->
+      <view style="width:670rpx;height:2rpx;margin:0 auto;background-color:#f3f3f3;margin-top:10rpx;"></view>
+
+      <!--描述退款原因-->
+      <textarea name="" placeholder="请描述退款原因"></textarea>
+    </view>
+
+    <view class="refund-source-wrap">
+      <view class="sold-list-head">
+        <image></image>
+        <view class="title">退款来源</view>
+        <text style="" class="">退款至您的账户</text>
+      </view>
+      <!--分割线-->
+      <view style="width:670rpx;height:2rpx;margin:0 auto;background-color:#f3f3f3;margin-top:10rpx;margin-bottom:10rpx;"></view>
+      <view class="sold-list-head">
+        <image></image>
+        <view class="title">退款金额</view>
+        <text style="color:#fd2323;" class="">￥36</text>
+      </view>
+    </view>
+
+    <!--底部固定栏-->
+    <view class="tab-wrap">
+      <view class="bill-btn" @tap="addAddress">申请退款</view>
+    </view>
+    <!--遮罩开始-->
+    <view class="commodity_screen" wx:if="{{showModalStatus}}" catchtouchmove='true' @tap="hideModal">
+      <view class="cancle-btn" @tap="hideModal">取消</view>
+      <view class="refund-reason-wrap">
+        <view class="refund-reason refund-reason-active">买多了，买错了，买少了</view>
+      </view>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import api from '../../api/api'
+  export default class Mall extends wepy.page {
+    config = {
+      navigationBarTitleText: '申请退款'
+    }
+    data = {}
+    components = {
+    }
+    methods = {
+      // 显示遮罩
+      showModal() {
+        // 显示遮罩层
+        var animation = wx.createAnimation({
+          duration: 200,
+          timingFunction: "linear",
+          delay: 0
+        })
+        this.animation = animation
+        animation.translateY(300).step()
+        this.setData({
+          animationData: animation.export(),
+          showModalStatus: true
+        })
+        setTimeout(function () {
+          animation.translateY(0).step()
+          this.setData({
+            animationData: animation.export()
+          })
+        }.bind(this), 200)
+      },
+      //隐藏遮罩
+      hideModal() {
+        // 隐藏遮罩层
+        var animation = wx.createAnimation({
+          duration: 200,
+          timingFunction: "linear",
+          delay: 0
+        })
+        this.animation = animation
+        animation.translateY(300).step()
+        this.setData({
+          animationData: animation.export(),
+        })
+        setTimeout(function () {
+          animation.translateY(0).step()
+          this.setData({
+            animationData: animation.export(),
+            showModalStatus: false
+          })
+        }.bind(this), 200)
+      },
+    }
+    //提交退款信息
+    async refundReason(){
+      const url = api.apiMall + '/takeaway/refund'
+      const data = {
+        orderId:1,
+        price:'',
+        content:""
+      }
+      await wepy.request({
+        url: url,
+        method: 'POST',
+        data: data,
+      }).then((res)=>{
+        const data = res.data.data;
+        console.log(data)
+      })
+    }
+    onLoad(){
+
+    }
+  }
+</script>

@@ -1,0 +1,195 @@
+<style type="less">
+  page{
+    width:100%;
+    height:100%;
+    background-color:#f3f3f3;
+    border:2rpx solid #f3f3f3;
+    box-sizing:border-box;
+  }
+  .bill-wrap{
+    width:710rpx;
+    height:auto;
+    background-color:#fff;
+    margin:20rpx auto;
+    .bill-list-wrap{
+      width:100%;
+      height:auto;
+      border-bottom:2rpx solid #f3f3f3;
+      padding:40rpx 30rpx;
+      box-sizing:border-box;
+      position:relative;
+      .bill-list{
+        width:100%;
+        height:40rpx;
+        font-size:30rpx;
+        color:#333;
+        .btn{
+          width: 90rpx;
+          height: 40rpx;
+          background-color: #ffd265;
+          border-radius: 20rpx;
+          font-size:26rpx;
+          line-height:40rpx;
+          text-align:center;
+        }
+      }
+      .type{
+        color:#969696;
+        margin-top:25rpx;
+        font-size:30rpx;
+      }
+      image{
+        display:block;
+        width: 16rpx;
+        height: 27rpx;
+        position:absolute;
+        top:0;
+        bottom:0;
+        right:15rpx;
+        margin:auto;
+      }
+    }
+  }
+  .tab-wrap {
+    width: 100%;
+    height: 120rpx;
+    background-color: #fff;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    .bill-btn{
+      width: 710rpx;
+      height: 84rpx;
+      background-color: #ffd265;
+      border-radius: 42rpx;
+      margin:18rpx auto 0;
+      color: #333333;
+      font-size:32rpx;
+      text-align:center;
+      line-height:84rpx;
+      position:relative;
+      image{
+        display:block;
+        width:35rpx;
+        height:35rpx;
+        position:absolute;
+        top:0;
+        bottom:0;
+        margin:auto;
+        left:220rpx;
+      }
+    }
+  }
+  .add-bill-words{
+    width:200rpx;
+    height:30rpx;
+    text-align:center;
+    font-size:30rpx;
+    color:#999;
+    position:absolute;
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+    margin:auto;
+  }
+</style>
+<template>
+  <view id="bill-list">
+    <view style="height:auto;margin-bottom:135rpx;">
+      <view class="bill-wrap">
+        <view class="bill-list-wrap" data-id="{{item.id}}" wx:for="{{billList}}" wx:for-item="item" wx:key="index" @tap.stop="chooseBill({{item}})">
+          <view class="bill-list">
+            <view style="float:left;">{{item.looked}}</view>
+            <view wx:if="{{item.status == 1}}" style="float:right;margin-right:20rpx;" class="btn">默认</view>
+            <view class="btn" style="float:right;margin-right:20rpx;" data-id="{{item.id}}" data-type="{{item.type}}" data-status="{{item.status}}" @tap.stop="edit">编辑</view>
+          </view>
+          <view class="type" wx:if="{{item.type == 1}}">公司</view>
+          <view class="type" wx:if="{{item.type == 2}}">个人</view>
+          <image src="../../../images/index/arrow-right.png"></image>
+        </view>
+      </view>
+    </view>
+    <view class="add-bill-words" style="display:{{show}}">添加发票</view>
+    <!--底部固定栏-->
+    <view class="tab-wrap">
+      <view class="bill-btn" @tap="addBill">
+        <image src="../../../images/index/add.png"></image>
+        点击新增发票
+      </view>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import api from '../../../api/api'
+  export default class billList extends wepy.page {
+    data = {
+      billList:[],   //发票列表,
+      show:'none'
+    }
+    config = {
+      navigationBarTitleText: '开票管理'
+    }
+    components = {
+    }
+    methods = {
+      // 跳转添加发票页面
+      addBill(){
+        wx.navigateTo({
+          url:'./addBill'
+        })
+      },
+      // 选择发票
+      chooseBill(item){
+        console.log(item)
+        wx.redirectTo({
+          url:'./moreMyMenu?id=' + item.id + '&looked=' + item.looked + '&number=' + item.number + '&type=' +item.type
+        })
+      },
+      // 编辑发票
+      edit(e){
+        let data = {
+          id:e.currentTarget.dataset.id,
+          type:e.currentTarget.dataset.type,
+          status:e.currentTarget.dataset.status
+        }
+        var billId = JSON.stringify(data);
+        wx.navigateTo({
+          url:'./editBill?billId=' + billId
+        })
+      }
+    }
+    // 请求发票列表
+    async getBillList(){
+      const url = api.apiMall + '/invoice/invoiceshow'
+      const data = {
+        userId:8
+      }
+      await wepy.request({
+        url: url,
+        method: 'POST',
+        data: data,
+      }).then(res=>{
+        if(res.data.code == 0){
+          console.log(res.data.data)
+          this.billList = res.data.data;
+          if(this.billList.length == 0){
+            this.show = 'block';
+          }else{
+            this.show = 'none';
+          }
+
+          this.$apply();
+        }
+      })
+    }
+    onLoad(){
+      this.getBillList();
+      this.status = wepy.$instance.globalData.status;
+    }
+    onRoute(){
+      this.getBillList();
+    }
+  }
+</script>

@@ -1,0 +1,51 @@
+<style type="less">
+  .first {
+    width:60rpx;
+    height:60rpx;
+    background-color:red;
+    margin:50rpx auto;
+    font-size:28rpx;
+    color:#fff;
+  }
+</style>
+<template>
+  <view class="first" @tap="chooseNum">点餐</view>
+  <view class="first" @tap.stop="takeOut">外卖</view>
+  <view class="first" @tap.stop="mine">我的</view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import child from '../../components/child'
+
+  export default class New extends wepy.page {
+    config = {
+        backgroundTextStyle: 'light',
+        navigationBarBackgroundColor: '#ffd265',
+        navigationBarTitleText: '堂食点餐',
+        navigationBarTextStyle: 'black'
+    }
+    data = {}
+    components = {}
+    methods = {
+      // 跳转点外卖页面
+      chooseNum(){
+        wx.navigateTo({
+          url:'./deliver/chooseNum'
+        })
+      },
+      // 跳转外卖页面
+      takeOut(){
+        wx.navigateTo({
+          url:'./takeOut/deliver'
+        })
+      },
+      // 跳转我的页面
+      mine(){
+        wx.navigateTo({
+          url:'./deliver/mine'
+        })
+      },
+    }
+
+  }
+</script>
