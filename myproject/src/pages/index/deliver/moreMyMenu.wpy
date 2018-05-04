@@ -124,11 +124,11 @@
         color:#333;
         padding:0 7rpx;
         box-sizing:border-box;
+        margin-top:10rpx;
         .user-profile{
           display:inline-block;
           width:70rpx;
           height:70rpx;
-          background-color:red;
           border-radius:50%;
           margin-top:5rpx;
           margin-right:30rpx;
@@ -312,7 +312,6 @@
     .close{
       width:24rpx;
       height:24rpx;
-      background-color:red;
       position:absolute;
       top:20rpx;
       right:20rpx;
@@ -342,8 +341,8 @@
           </view>
           <view class="table-num-wrap">
             <view>桌号： {{tableNum}}</view>
-            <view class="table-num">份数： {{deliverData.num}}</view>
-            <view class="user-num">人数： {{eatFoodNum}}人</view>
+            <view class="table-num">份数： {{copieAll}}</view>
+            <view class="user-num">人数： {{eatFoodNum}}</view>
           </view>
         </view>
       </view>
@@ -374,7 +373,7 @@
                     <view>{{i.title}}</view>
                     <view class="price">￥{{i.price/100}}</view>
                   </view>
-                  <view class="num">x {{i.num}}</view>
+                  <view class="num">x {{i.foodNum}}</view>
                 </view>
               </view>
             </view>
@@ -421,10 +420,10 @@
         <view class="sold-list-head">
           <view style="font-weight:bold;" style="color:#969696">优惠规则</view>
           <view style="display:inline-block;float:right;color:#333;">
-            <view style="font-size:26rpx;color:#969696;margin-right:15rpx;">已优惠￥6</view>
+            <view style="font-size:26rpx;color:#969696;margin-right:15rpx;">已优惠￥{{disMoney}}</view>
             <view class="price" style="font-size:36rpx;font-weight:bold;">
               <text>总计：</text>
-              <text style="color:#ff2323;">￥{{total ? total : 0}}</text>
+              <text style="color:#ff2323;">￥{{middlePrice ? middlePrice : 0}}</text>
             </view>
           </view>
         </view>
@@ -503,7 +502,7 @@
     <view class="tab-wrap">
       <view class="price">
         <text>总计:</text>
-        <text style="color:#ff2323">￥{{total ? total : 0}}</text>
+        <text style="color:#ff2323">￥{{middlePrice ? middlePrice : 0}}</text>
       </view>
       <view class="mall-car">
         <view class="budget" @tap.stop="payMoney">立即结算</view>
@@ -556,7 +555,11 @@
       socktBtnTitle: '连接socket',
       socketMsgQueue:[],
       long:0,
-      openid:0
+      openid:0,
+      copieAll:0,
+      disMoney:0,
+      deliverData:null,
+      socketTableNum:0
     }
     components = {
     }
@@ -595,9 +598,14 @@
         this.payWayActive = dataset.index;
         this.payWayStyleActive = dataset.index;
         if(this.discount[dataset.index].type == 1){
-          this.total = this.keepTwoDecimalFull(this.middlePrice - (this.discount[dataset.index].price/100));
+          this.deliverData.price = this.keepTwoDecimalFull(this.middlePrice - (this.discount[dataset.index].price/100));
+          // 优惠的钱
+          this.disMoney = Number(this.middlePrice) - Number(this.deliverData.price);
         }else if(this.discount[dataset.index].type == 2){
-          this.total = this.keepTwoDecimalFull(this.middlePrice * (this.discount[dataset.index].discount/10));
+          this.deliverData.price = this.keepTwoDecimalFull(this.middlePrice * (this.discount[dataset.index].discount/10));
+          // 优惠的钱
+          this.disMoney = Number(this.middlePrice) - Number(this.deliverData.price);
+          this.disMoney = this.keepTwoDecimalFull(this.disMoney);
         }
         this.promotionId = this.discount[dataset.index].id;
         this.promotionMsg = this.discount[dataset.index].title;
@@ -646,15 +654,17 @@
       await wepy.request({
         url: url,
         method: 'POST',
-        data: data,
+        data: data
       }).then((res)=>{
         const data = res.data.data;
         console.log("hhh")
-        console.log(res)
+        console.log(res.data)
         this.morePeopleData = data;
-        this.morePeopleOrderGoods = data.goodLists;  //所有人点的lists
+        this.copieAll = res.data.copieAll,        //总份数
+        // this.morePeopleOrderGoods = data.goodLists;  //所有人点的lists
         this.total = this.keepTwoDecimalFull(Number(res.data.moreAllTotal));
         this.middlePrice = res.data.moreAllTotal;
+        this.middlePrice = this.keepTwoDecimalFull(this.middlePrice);
         this.$apply();
         this.getDiscount();
       })
@@ -705,6 +715,10 @@
     }
     // 支付
     async payMoneyFn(){
+      wx.setStorage({
+        key: 'deliverData',
+        data:''
+      })
       const url = api.apiMall + '/food/SocketOrderAdd';
       const data = {
         goodMessage:this.morePeopleData,
@@ -730,14 +744,37 @@
         invoice_bank:'',
         invoice_bank_number:''
       }
+      // console.log(data)
       await wepy.request({
         url: url,
         method: 'POST',
         data: data,
       }).then((res)=>{
+        let that = this;
         console.log("这么多输出")
         // console.log(res)
         //将orderId存到全局，供订单完成使用
+
+        //socket清空订单
+        let data = {
+          type:'CLOSE',
+          desktop:this.socketTableNum
+        }
+        data = JSON.stringify(data)
+        wx.sendSocketMessage({
+          data: data
+        })
+        wx.onSocketMessage(function (res) {
+          console.log('支付时收到服务器内容：' + res.data);
+          let data = JSON.parse(res.data)
+          if(data.message == 'CLOSE'){
+            console.log("重新调取cartLists接口");
+            that.getMorePeopleData();
+          }
+        })
+
+
+        //微信支付
         wepy.$instance.globalData.orderId = res.data.orderId;
         if(res.data.code == 100){
           wepy.$instance.globalData.payWay = '微信支付'
@@ -784,7 +821,7 @@
         }else{
           console.log("会员支付成功")
           wepy.$instance.globalData.payWay = '会员卡支付'
-          var that = this;
+          // var that = this;
           wx.showToast({
             title: '支付成功',
             icon: 'success',
@@ -798,23 +835,6 @@
           })
         }
         this.$apply();
-        // let data = {
-        //   type:'CLOSE',
-        //   desktop:123456
-        // }
-        // data = JSON.stringify(data)
-        // wx.sendSocketMessage({
-        //   data: data
-        // })
-        // wx.onSocketMessage(function (res) {
-        //   console.log('支付时收到服务器内容：' + res.data);
-        //   let data = JSON.parse(res.data)
-        //   if(data.message == 'UPDATE'){
-        //     console.log("重新调取接口");
-        //     that.getMorePeopleData();
-        //   }
-        //
-        // })
       })
     }
     onLoad(options){
@@ -827,6 +847,9 @@
           that.$apply();
         }
       })
+      var socketData = wx.getStorageSync("data");
+      this.socketTableNum = socketData.socketTableNum;
+      console.log(this.socketTableNum);
       //获取个人信息
       wx.getStorage({
         key: 'userInfo',
@@ -835,6 +858,8 @@
           that.$apply();
         }
       })
+      //获取deliverData数据
+      this.deliverData = wx.getStorageSync('deliverData');
       var value = wx.getStorageSync('data');
       this.tableNum = value.socketTableNum;
       this.eatFoodNum = value.socketFoodNum;
@@ -874,7 +899,7 @@
         let that = this;
         let data = {
           type:'UPDATE_CARTS',
-          desktop:123456
+          desktop:5
         }
         data = JSON.stringify(data);
         wx.onSocketOpen(function (res) {
@@ -897,30 +922,17 @@
           console.log('收到服务器内容：' + res.data);
           let data = JSON.parse(res.data)
           if(data.message == 'UPDATE'){
-            console.log("重新调取接口");
+            // console.log("重新调取接口");
             that.getMorePeopleData();
           }
 
         })
       }
+      // wx.setStorage({
+      //   key: 'deliverData',
+      //   data:''
+      // })
     }
-    // 发送socket信息
-    // sendSocketMessage(msg){
-    //   if (this.socketOpen) {
-    //     let data = {
-    //       type:'UPDATE_CARTS',
-    //       desktop:123456
-    //     }
-    //     data = JSON.stringify(data);
-    //     //通过 WebSocket 连接发送数据，需要先 wx.connectSocket，并在 wx.onSocketOpen 回调之后才能发送。
-    //     wx.sendSocketMessage({
-    //       data: data
-    //     })
-    //     console.log("数据真的发送成功")
-    //   } else {
-    //     // socketMsgQueue.push(msg)
-    //     console.log("发送失败")
-    //   }
-    // }
+
   }
 </script>

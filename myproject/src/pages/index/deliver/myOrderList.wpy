@@ -131,12 +131,12 @@
           <image></image>
           <view>全部订单</view>
         </view>
-        <view class="order-content-wrap" data-id="{{item.id}}" wx:for="{{orderList}}" wx:for-item="item" wx:key="index" @tap="orderDetail">
+        <view class="order-content-wrap" data-id="{{item.id}}" data-type="{{item.ordertype}}" wx:for="{{orderList}}" wx:for-item="item" wx:key="index" @tap="orderDetail">
           <view class="shop-name-wrap">
             <view>订单编号: {{item.serial}}</view>
             <view class="order-status" style="float:right;" wx:if="{{item.status == 1}}">已完成</view>
           </view>
-          <image class="profile" src="{{item.good.cover}}"></image>
+          <image class="profile" src="{{item.ordertype == 1 ? item.good.cart[0].cover : item.good.cover}}"></image>
           <view class="order">
             <view class="shop-name-wrap">
               <view>{{item.good.title}}等{{item.count}}件商品</view>
@@ -179,9 +179,17 @@
       //跳转订单详情
       orderDetail(e){
         console.log(e.currentTarget.dataset.id)
-        wx.navigateTo({
-          url:'./orderDetail?orderId=' + e.currentTarget.dataset.id
-        })
+        if(e.currentTarget.dataset.type == 1){
+          wx.navigateTo({
+            url:'./orderDetail?orderId=' + e.currentTarget.dataset.id
+          })
+        }else if(e.currentTarget.dataset.type == 0){
+          wx.navigateTo({
+            url:'./noneTablenumOrderDetail?orderId=' + e.currentTarget.dataset.id
+          })
+        }
+
+
       }
     }
     // 获取订单列表接口
@@ -196,9 +204,9 @@
         method: 'POST',
         data: data,
       }).then((res)=>{
-        console.log(res.data)
         const data = res.data;
         this.orderList = data;
+        console.log(this.orderList);
         this.$apply();
       })
     }

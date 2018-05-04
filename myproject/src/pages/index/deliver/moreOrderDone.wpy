@@ -320,9 +320,9 @@
             </view>
           </view>
           <view class="table-num-wrap">
-            <view>桌号： {{deliverData.tableNum}}</view>
-            <view class="table-num">份数： {{payPeopleMsg.sums}}</view>
-            <view class="user-num">人数： {{deliverData.foodNum}}人</view>
+            <view>桌号： {{moreOrderGoods.deskop}}</view>
+            <view class="table-num">份数： {{sums}}</view>
+            <view class="user-num">人数： {{moreOrderGoods.number}}</view>
           </view>
         </view>
         <!--订单已完成-->
@@ -344,21 +344,21 @@
           </view>
           <!--订单商品列表-->
           <view class="user-info-model-wrap" style="">
-            <view class="user-info-wrap">
+            <view class="user-info-wrap" wx:for="{{payPeopleMsg}}" wx:key="{{index}}" wx:for-item="item">
               <view class="user-info">
-                <image class="user-profile" src="../../../images/index/logo.png"></image>
-                <text class="user-name">张大妮</text>
-                <text class="food-num">共2份</text>
+                <image class="user-profile" src="{{item.user.avatar}}"></image>
+                <text class="user-name">{{item.user.nickname}}</text>
+                <text class="food-num">共{{item.goodNum}}份</text>
               </view>
               <!--点的餐食列表-->
-              <view class="foods-list" wx:for="{{payPeopleMsg.goods}}" wx:key="{{index}}" wx:for-item="item">
-                <image class="foods-pic" src="{{item.cover}}"></image>
+              <view class="foods-list" wx:for="{{item.cart}}" wx:key="{{index}}" wx:for-item="cart">
+                <image class="foods-pic" src="{{cart.cover}}"></image>
                 <view class="foods-pic-desc">
                   <view class="foods-name">
-                    <view>{{item.title}}</view>
-                    <view class="price">￥{{item.price/100}}</view>
+                    <view>{{cart.title}}</view>
+                    <view class="price">￥{{cart.price/100}}</view>
                   </view>
-                  <view class="num">x {{item.nums}}</view>
+                  <view class="num">x {{cart.foodNum}}</view>
                 </view>
               </view>
             </view>
@@ -397,7 +397,7 @@
             <view style="font-size:26rpx;color:#969696;margin-right:15rpx;">已优惠￥6</view>
             <view class="price" style="font-size:36rpx;font-weight:bold;">
               <text>总计：</text>
-              <text style="color:#ff2323;">￥{{deliverData.price}}</text>
+              <text style="color:#ff2323;">￥{{moreOrderGoods.total/100}}</text>
             </view>
           </view>
         </view>
@@ -466,7 +466,8 @@
       dateline:'', //下单时间
       promotion:null,
       moreOrderGoods:null,
-      userInfo:null
+      userInfo:null,
+      sums:0
     }
     components = {
       order:order
@@ -484,19 +485,22 @@
       const data = {
         orderId:this.orderId
       }
+      console.log();
       await wepy.request({
         url: url,
         method: 'POST',
         data: data,
       }).then(res=>{
         const data = res.data.data;
-        console.log(res)
+        console.log("多人点餐生成订单");
+        console.log(data)
         if(res.data.code == 0){
           this.moreOrderGoods = res.data.orderResult;
-          this.payPeopleMsg = data;
+          this.payPeopleMsg = data.goods;
           this.serial = data.serial;
           this.dateline = data.dateline;
-          this.promotion = data.promotion
+          this.promotion = data.promotion,
+          this.sums = data.sums
           this.$apply();
         }
       })

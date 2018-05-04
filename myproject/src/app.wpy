@@ -40,6 +40,7 @@ export default class extends wepy.app {
       'pages/index/deliver/myOrderList',
       'pages/index/deliver/comment',
       'pages/index/deliver/orderDetail',
+      'pages/index/deliver/noneTablenumOrderDetail',
       'pages/index/deliver/editBill',
       'pages/index/deliver/moreMyMenu',
       'pages/index/deliver/moreOrderDone',

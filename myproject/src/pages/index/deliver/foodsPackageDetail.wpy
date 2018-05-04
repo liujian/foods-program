@@ -191,11 +191,11 @@
     <view class="tab-wrap">
       <view class="price">
         <text>总计：</text>
-        <text style="color:#ff2323">￥{{deliverData.price}}</text>
+        <text style="color:#ff2323">￥{{deliverData.price ? deliverData.price : price}}</text>
       </view>
       <view class="mall-car" @tap="myMenu">
         我的菜单
-        <view class="num">{{deliverData.num}}</view>
+        <view class="num">{{deliverData.num ? deliverData.num : count}}</view>
       </view>
     </view>
   </view>
@@ -216,9 +216,10 @@
       count:0,
       price:0,
       price1:0,
-      price2:0
+      orderGoods:[],
     }
     components = {
+
     }
     methods = {
       myMenu(){
@@ -236,83 +237,155 @@
       },
       // 添加商品
       add(jObject){
-        console.log(jObject)
-        this.deliverData.num ++;
-        let fixed = (jObject.price/100)*1;
-        this.deliverData.price = Number(this.deliverData.price) + Number(fixed);
-        this.deliverData.price = this.keepTwoDecimalFull(Number(this.deliverData.price));
-        this.detailData.foodNum ++;
-        // console.log(jObject)
-        let flag = false;
-        let index = -1;
-        // console.log(this.deliverData.orderGoods);
-        if(this.deliverData.orderGoods.length == 0){
-          jObject.foodNum = 1;
-          this.deliverData.orderGoods.push(jObject)
-        }else{
-          for(var i = 0;i<this.deliverData.orderGoods.length;i++){
-            if (this.deliverData.orderGoods[i].id == this.detailId) {
-              flag = true
-              index = i
-              // return;
+        if(this.deliverData){
+          console.log("this.deliverData");
+          this.deliverData.num ++;
+          let fixed = (jObject.price/100)*1;
+          this.deliverData.price = Number(this.deliverData.price) + Number(fixed);
+          this.deliverData.price = this.keepTwoDecimalFull(Number(this.deliverData.price));
+          this.detailData.foodNum ++;
+          // console.log(jObject)
+          let flag = false;
+          let index = -1;
+          // console.log(this.deliverData.orderGoods);
+          if(this.deliverData.orderGoods.length == 0){
+            jObject.foodNum = 1;
+            this.deliverData.orderGoods.push(jObject)
+          }else{
+            for(var i = 0;i<this.deliverData.orderGoods.length;i++){
+              if (this.deliverData.orderGoods[i].id == this.detailId) {
+                flag = true
+                index = i
+                // return;
+              }
+            }
+            if (flag) {
+              this.deliverData.orderGoods[index].foodNum++
+            }else {
+              jObject.foodNum++;
+              this.deliverData.orderGoods.push(jObject)
             }
           }
-          if (flag) {
-            this.deliverData.orderGoods[index].foodNum++
-          }else {
-            jObject.foodNum++;
-            this.deliverData.orderGoods.push(jObject)
+          wx.setStorage({
+            key: 'deliverData',
+            data:this.deliverData
+          })
+          wepy.$instance.globalData.deliverData = this.deliverData;
+          wepy.$instance.globalData.detailNum = this.detailData.foodNum;
+          wepy.$instance.globalData.detailObject = jObject;
+          console.log(this.deliverData)
+        }else{
+          console.log("this.deliverData不存在");
+          this.count ++;
+          this.detailData.foodNum++;
+          let fixed = (jObject.price/100)*1;
+          this.price = Number(fixed) + Number(this.price);
+          console.log(this.price)
+          // this.price = this.keepTwoDecimalFull(Number(this.deliverData.price));
+          jObject.foodNum ++;
+          // console.log(jObject)
+          let flag = false;
+          let index = -1;
+          // console.log(this.deliverData.orderGoods);
+          if(this.orderGoods.length == 0){
+            jObject.foodNum = 1;
+            this.orderGoods.push(jObject)
+          }else{
+            for(var i = 0;i<this.orderGoods.length;i++){
+              if (this.orderGoods[i].id == this.detailId) {
+                flag = true
+                index = i
+                // return;
+              }
+            }
+            if (flag) {
+              this.orderGoods[index].foodNum++
+            }else {
+              jObject.foodNum++;
+              this.orderGoods.push(jObject)
+            }
           }
+          let data1 = {
+            tableNum:this.globalDataNum.tableNum,
+            foodNum:this.globalDataNum.eatFoodNum,
+            orderGoods:this.orderGoods,
+            price:this.deliverData ? this.deliverData.price : this.price,
+            num:this.deliverData ? this.deliverData.num : this.count
+          }
+          wx.setStorage({
+            key: 'deliverData',
+            data:data1
+          })
+          let takeaways = wepy.$instance.globalData.takeaways;
+          try{
+            takeaways.forEach((item,index)=>{
+              item.goods.forEach((item1,index1)=>{
+                if(item1.id == jObject.id){
+                  item1.foodNum ++;
+                }
+              })
+            })
+          }catch(err){
+            console.log(err)
+          }
+          wepy.$instance.globalData.takeaways = takeaways;
         }
-        wx.setStorage({
-          key: 'deliverData',
-          data:this.deliverData
-        })
-        wepy.$instance.globalData.deliverData = this.deliverData;
-        wepy.$instance.globalData.detailNum = this.detailData.foodNum;
-        wepy.$instance.globalData.detailObject = jObject;
-        console.log(this.deliverData)
+
       },
       // 减少商品
       reduce(jObject){
-        this.deliverData.num --;
-        let fixed = (jObject.price/100)*1;
-        console.log(fixed)
-        console.log(this.deliverData.price)
-        this.deliverData.price = Number(this.deliverData.price) - Number(fixed);
-        this.deliverData.price = this.keepTwoDecimalFull(Number(this.deliverData.price));
-        this.detailData.foodNum --;
-        // console.log(jObject)
-        let flag = false;
-        let index = -1;
-        // console.log(this.deliverData.orderGoods);
-        if(this.deliverData.orderGoods.length == 0){
-          jObject.foodNum = 1;
-          this.deliverData.orderGoods.push(jObject)
+        if(jObject.foodNum <= 0){
+          return;
         }else{
-          for(var i = 0;i<this.deliverData.orderGoods.length;i++){
-            if (this.deliverData.orderGoods[i].id == this.detailId) {
-              flag = true
-              index = i
-              // return;
+          this.deliverData.num --;
+          let fixed = (jObject.price/100)*1;
+          this.deliverData.price = Number(this.deliverData.price) - Number(fixed);
+          this.deliverData.price = this.keepTwoDecimalFull(Number(this.deliverData.price));
+          this.detailData.foodNum --;
+          // console.log(jObject)
+          let flag = false;
+          let index = -1;
+          // console.log(this.deliverData.orderGoods);
+          if(this.deliverData.orderGoods.length == 0){
+            jObject.foodNum = 1;
+            this.deliverData.orderGoods.push(jObject)
+          }else{
+            for(var i = 0;i<this.deliverData.orderGoods.length;i++){
+              if (this.deliverData.orderGoods[i].id == this.detailId) {
+                flag = true
+                index = i
+                // return;
+              }
+            }
+            if (flag) {
+              if(this.deliverData.orderGoods[index].foodNum <= 1){
+                console.log("删除这一项")
+                this.deliverData.orderGoods.splice(index,1)
+              }else{
+                this.deliverData.orderGoods[index].foodNum--;
+              }
             }
           }
-          if (flag) {
-            this.deliverData.orderGoods[index].foodNum--
-          }else {
-            jObject.foodNum--;
-            this.deliverData.orderGoods.push(jObject)
-          }
+          wx.setStorage({
+            key: 'deliverData',
+            data:this.deliverData
+          })
+          wepy.$instance.globalData.deliverData = this.deliverData;
+          wepy.$instance.globalData.detailNum = this.detailData.foodNum;
+          wepy.$instance.globalData.detailObject = jObject;
+          console.log(this.deliverData)
         }
-        wx.setStorage({
-          key: 'deliverData',
-          data:this.deliverData
-        })
-        wepy.$instance.globalData.deliverData = this.deliverData;
-        wepy.$instance.globalData.detailNum = this.detailData.foodNum;
-        wepy.$instance.globalData.detailObject = jObject;
-        console.log(this.deliverData)
+
+
       },
+    }
+    getData(){
+      // console.log(wepy.$instance.globalData.num.eatFoodNum)
+      let globalDataNum = wepy.$instance.globalData.num;
+      this.globalDataNum = globalDataNum;
+      // console.log(globalDataNum)
+      this.tableNum = globalDataNum.tableNum;
+      this.foodNum = globalDataNum.foodNum;
     }
     // 保留两位小数
     keepTwoDecimalFull(num) {
@@ -348,28 +421,26 @@
         this.detailPrice = data.price;
         this.detailContent = data.content;
         this.detailCover = data.cover;
-        // console.log(this.detailContent)
         this.$apply();
       })
     }
     onLoad(options){
       let that = this;
-      // console.log(JSON.parse(options.detailData));
+      that.getData();
       this.detailData = JSON.parse(options.detailData);
       this.detailId = this.detailData.id;
-      // 获取全局变量中的数据
-      // this.deliverData = wepy.$instance.globalData.deliverData;
       this.globalDataNum = wepy.$instance.globalData.num;
-      // console.log(this.deliverData);
+      // 获取deliverData数据
       wx.getStorage({
         key: 'deliverData',
         success: function(res) {
           that.deliverData = res.data;
-          console.log(res.data)
+          console.log(res.data);
           that.$apply();
         }
       })
     }
+    // onShow是只要进入页面 就会执行一次
     onShow(){
       this.getFoodDetailData();
     }

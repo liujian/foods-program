@@ -342,20 +342,20 @@
           <!--订单商品列表-->
           <view class="user-info-model-wrap" style="">
             <view class="user-info-wrap" wx:for="{{payPeopleMsg}}" wx:key="{{index}}" wx:for-item="item">
-              <view class="user-info">
-                <image class="user-profile" src="{{item.user.avatar}}"></image>
-                <text class="user-name">{{item.nickname}}</text>
-                <text class="food-num">共{{item.goodNum}}份</text>
-              </view>
+              <!--<view class="user-info">-->
+                <!--<image class="user-profile" src="{{item.user.avatar}}"></image>-->
+                <!--<text class="user-name">{{item.nickname}}</text>-->
+                <!--<text class="food-num">共{{item.goodNum}}份</text>-->
+              <!--</view>-->
               <!--点的餐食列表-->
-              <view class="foods-list" wx:for="{{item.cart}}" wx:key="{{index}}" wx:for-item="cart">
-                <image class="foods-pic" src="{{cart.cover}}"></image>
+              <view class="foods-list">
+                <image class="foods-pic" src="{{item.cover}}"></image>
                 <view class="foods-pic-desc">
                   <view class="foods-name">
-                    <view>{{cart.title}}</view>
-                    <view class="price">￥{{cart.price/100}}</view>
+                    <view>{{item.title}}</view>
+                    <view class="price">￥{{item.price/100}}</view>
                   </view>
-                  <view class="num">x {{cart.foodNum}}</view>
+                  <view class="num">x {{item.nums}}</view>
                 </view>
               </view>
             </view>
@@ -452,7 +452,7 @@
   import wepy from 'wepy'
   import api from '../../../api/api'
   // import order from '../../../components/index/order'
-  export default class Orderdetail extends wepy.page {
+  export default class NoneTablenumorderdetail extends wepy.page {
     data = {
       billing:true,
       deliverData:null,
@@ -493,6 +493,7 @@
         console.log(res)
         if(res.data.code == 0){
           this.payPeopleMsg = data.goods;
+          console.log(this.payPeopleMsg);
           this.serial = data.serial;
           this.dateline = data.dateline;
           this.promotion = data.promotion;

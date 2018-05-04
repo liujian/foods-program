@@ -545,7 +545,7 @@
               }
             }else{
               //这是无桌号点餐模式
-              if(that.deliverData.num == 0){
+              if(that.deliverData.num <= 0){
                 wx.showToast({
                   title: '请选择商品',
                   icon: 'none',
@@ -648,41 +648,99 @@
         console.log(this.orderGoods)
       },
       // 减少商品
+      // reduce(jObject,l,m){
+      //   // console.log(jObject)
+      //   if(this.takeaways[l].goods[m].foodNum <= 0){
+      //     this.takeaways[l].goods[m].foodNum = 0;
+      //   }else{
+      //     this.takeaways[l].goods[m].foodNum--;
+      //   }
+      //   this.count --;
+      //   var fixed = (jObject.price/100)*1;
+      //   this.price1 -= (fixed*1);    //获取商品价格
+      //   this.price = this.keepTwoDecimalFull(Number(this.price1));
+      //   let flag = false;
+      //   let index = -1;
+      //   for(var j = 0;j<this.orderGoods.length;j++){
+      //     if (this.orderGoods[j].id == jObject.id) {
+      //       flag = true
+      //       index = j
+      //       // return;
+      //     }
+      //   }
+      //   console.log(index);
+      //   if (flag) {
+      //     if(this.orderGoods[index].foodNum <= 1){
+      //       console.log("删除这一项")
+      //       this.orderGoods.splice(index,1)
+      //       return;
+      //     }else{
+      //       this.orderGoods[index].foodNum--;
+      //     }
+      //   }else {
+      //     // jObject.foodNum = 1;
+      //     // this.orderGoods.push(jObject);
+      //   }
+      //   console.log(this.orderGoods);
+      // },
+
       reduce(jObject,l,m){
-        // console.log(jObject)
-        if(this.takeaways[l].goods[m].foodNum <= 0){
-          this.takeaways[l].goods[m].foodNum = 0;
+        if(jObject.foodNum <= 0){
+          return;
         }else{
+          let that = this;
+          this.deliverData = wx.getStorageSync('deliverData');
+          this.orderGoods = this.deliverData.orderGoods;
           this.takeaways[l].goods[m].foodNum--;
-        }
-        this.count --;
-        var fixed = (jObject.price/100)*1;
-        this.price1 -= (fixed*1);    //获取商品价格
-        this.price = this.keepTwoDecimalFull(Number(this.price1));
-        let flag = false;
-        let index = -1;
-        for(var j = 0;j<this.orderGoods.length;j++){
-          if (this.orderGoods[j].id == jObject.id) {
-            flag = true
-            index = j
-            // return;
+          console.log("deliverData存在");
+          this.deliverData.num = Number(--this.deliverData.num);
+          console.log(this.deliverData.num)
+          var fixed = (jObject.price/100)*1;
+          this.deliverData.price = Number(this.deliverData.price) - Number(fixed);
+          this.deliverData.price = this.keepTwoDecimalFull(this.deliverData.price);
+          this.$apply();
+          let flag = false;
+          let index = -1;
+          for(var i = 0;i<this.orderGoods.length;i++){
+            if (this.orderGoods[i].id == jObject.id) {
+              flag = true
+              index = i
+              // return;
+            }
           }
-        }
-        console.log(index);
-        if (flag) {
-          if(this.orderGoods[index].foodNum <= 1){
-            console.log("删除这一项")
-            this.orderGoods.splice(index,1)
-            return;
-          }else{
-            this.orderGoods[index].foodNum--;
+          if (flag) {
+            if(this.orderGoods[index].foodNum <= 1){
+              console.log("删除这一项")
+              this.orderGoods.splice(index,1)
+              this.count = 0;
+            }else{
+              this.orderGoods[index].foodNum--;
+            }
           }
-        }else {
-          // jObject.foodNum = 1;
-          // this.orderGoods.push(jObject);
+          console.log(this.orderGoods)
+          this.takeaways.forEach((item,index)=>{
+            item.goods.forEach((item1,index1)=>{
+              if(item1.id == jObject.id){
+                item1.foodNum;
+                this.$apply();
+              }
+            })
+          })
+          let data1 = {
+            tableNum:this.globalDataNum.tableNum,
+            foodNum:this.globalDataNum.eatFoodNum,
+            orderGoods:this.orderGoods,
+            price:this.deliverData ? this.deliverData.price : this.price,
+            num:this.deliverData.num
+          }
+          wx.setStorage({
+            key: 'deliverData',
+            data:data1
+          })
+          console.log(this.orderGoods)
         }
-        console.log(this.orderGoods);
-      },
+
+      }
       // 添加商品
       // add(jObject,i,j,e){
       //   console.log(jObject);
@@ -780,13 +838,6 @@
       //   // console.log(wepy.$instance.globalData.deliverData);
       // }
     }
-    // 计算总价的函数
-    countPrice(orderGoods){
-      orderGoods.forEach((item,index)=>{
-        this.price += Number(item.price) * Number(item.foodNum)
-      })
-      console.log(this.keepTwoDecimalFull(this.price))
-    }
     // 保留两位小数
     keepTwoDecimalFull(num) {
       var result = parseFloat(num);
@@ -809,19 +860,20 @@
     async getMoreOrderDoneData(){
       const url = api.apiMall + '/food/foodAdd'
       const data = {
-        userId:this.openid,
-        deskop:this.tableNum,
-        goodData:this.orderGoods,
-        moreTotal:this.price
+        userId:8,
+        deskop:this.deliverData.tableNum,
+        goodData:this.deliverData.orderGoods,
+        moreTotal:this.deliverData.price
       }
-      console.log(this.orderGoods)
+      console.log("foodAdd");
+      console.log(data)
       await wepy.request({
         url: url,
         method: 'POST',
         data: data,
       }).then(res=>{
-        // const data = res;
-        // console.log(data)
+        const data = res;
+        console.log(data)
       })
     }
     // 无桌号点餐
@@ -850,6 +902,7 @@
           this.activitysLength = data.activity.length;
           this.catelogs = data.catelogs;
           this.takeaways = data.takeaways;
+          wepy.$instance.globalData.takeaways = data.takeaways;
           this.goods = data.goods;
           // 保存的全局变量，为了和详情页的数据联结起来
           // console.log(this.takeaways)
@@ -925,26 +978,43 @@
       this.detailNum = wepy.$instance.globalData.detailNum;
       this.detailObject = wepy.$instance.globalData.detailObject;
       // this.deliverData = wepy.$instance.globalData.deliverData;
-
+      // wx.getStorage({
+      //   key: 'deliverData',
+      //   success: function(res) {
+      //     that.deliverData = res.data;
+      //     that.$apply();
+      //   }
+      // })
+      this.deliverData = wx.getStorageSync("deliverData");
       if(this.deliverData){
         this.deliverData.price = this.deliverData.price;
         this.deliverData.count = this.deliverData.num;
       }
-      this.takeaways.forEach((item,index)=>{
-        item.goods.forEach((item1,index1)=>{
-          if(item1.id == this.detailObject.id){
-            item1.foodNum = this.detailNum;
-          }
-        })
-      })
-      // console.log(this.deliverData)
-      wx.getStorage({
-        key: 'deliverData',
-        success: function(res) {
-          that.deliverData = res.data;
-          that.$apply();
+      if(this.deliverData){
+        console.log("this.deliverData存在");
+        this.takeaways = wepy.$instance.globalData.takeaways;
+        try{
+          this.takeaways.forEach((item,index)=>{
+            item.goods.forEach((item1,index1)=>{
+              if(item1.id == this.detailObject.id){
+                item1.foodNum = this.detailNum;
+              }
+            })
+          })
+        }catch(err){
+          console.log(err)
         }
-      })
+      }else{
+        this.price = 0.00;
+        this.count = 0;
+        console.log("走这里")
+        this.takeaways.forEach((item,index)=>{
+          item.goods.forEach((item1,index1)=>{
+            item1.foodNum = 0;
+          })
+        })
+      }
+      console.log(this.takeaways);
       this.$apply();
 
     }

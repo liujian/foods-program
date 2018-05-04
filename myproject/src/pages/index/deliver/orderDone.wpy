@@ -320,9 +320,9 @@
             </view>
           </view>
           <view class="table-num-wrap">
-            <view>桌号： {{deliverData.tableNum}}</view>
-            <view class="table-num">份数： {{payPeopleMsg.sums}}</view>
-            <view class="user-num">人数： {{deliverData.foodNum}}人</view>
+            <view>桌号： {{orderResult.deskop}}</view>
+            <view class="table-num">份数： {{sums}}</view>
+            <view class="user-num">人数： {{number}}</view>
           </view>
         </view>
         <!--订单已完成-->
@@ -397,7 +397,7 @@
             <view style="font-size:26rpx;color:#969696;margin-right:15rpx;">已优惠￥6</view>
             <view class="price" style="font-size:36rpx;font-weight:bold;">
               <text>总计：</text>
-              <text style="color:#ff2323;">￥{{deliverData.price}}</text>
+              <text style="color:#ff2323;">￥{{orderResult.total/100}}</text>
             </view>
           </view>
         </view>
@@ -465,7 +465,10 @@
       serial:'',    //订单编号
       dateline:'', //下单时间
       promotion:null,
-      userInfo:null
+      userInfo:null,
+      sums:0,     //总份数
+      number:0,   //用餐人数
+      orderResult:null
     }
     components = {
       order:order
@@ -483,14 +486,18 @@
       const data = {
         orderId:this.orderId
       }
+      console.log(data);
       await wepy.request({
         url: url,
         method: 'POST',
         data: data,
       }).then(res=>{
         const data = res.data.data;
-        // console.log(data)
+        console.log(data)
         if(res.data.code == 0){
+          this.sums = data.sums;        //总份数
+          this.number = data.number;    //用餐人数
+          this.orderResult = data.orderResult,
           this.payPeopleMsg = data;
           this.serial = data.serial;
           this.dateline = data.dateline;

@@ -128,7 +128,6 @@
           display:inline-block;
           width:70rpx;
           height:70rpx;
-          background-color:red;
           border-radius:50%;
           margin-top:5rpx;
           margin-right:30rpx;
@@ -312,7 +311,6 @@
     .close{
       width:24rpx;
       height:24rpx;
-      background-color:red;
       position:absolute;
       top:20rpx;
       right:20rpx;
@@ -343,7 +341,7 @@
           <view class="table-num-wrap">
             <view>桌号： {{deliverData.tableNum}}</view>
             <view class="table-num">份数： {{deliverData.num}}</view>
-            <view class="user-num">人数： {{deliverData.foodNum}}人</view>
+            <view class="user-num">人数： {{deliverData.foodNum}}</view>
           </view>
         </view>
       </view>
@@ -421,7 +419,7 @@
         <view class="sold-list-head">
           <view style="font-weight:bold;" style="color:#969696">优惠规则</view>
           <view style="display:inline-block;float:right;color:#333;">
-            <view style="font-size:26rpx;color:#969696;margin-right:15rpx;">已优惠￥6</view>
+            <view style="font-size:26rpx;color:#969696;margin-right:15rpx;">已优惠￥{{disMoney}}</view>
             <view class="price" style="font-size:36rpx;font-weight:bold;">
               <text>总计：</text>
               <text style="color:#ff2323;">￥{{deliverData.price ? deliverData.price : 0}}</text>
@@ -458,42 +456,42 @@
           </view>
           <!--开票信息-->
           <view class="sold-list-head" style="padding-left:48rpx;display:{{long == 0 ? 'block' : 'none'}}">
-            <view style="">您还未选择发票信息</view>
-            <view style="display:inline-block;float:right;color:#969696;" @tap.stop="billList">
+            <view style="font-size:28rpx;">您还未选择发票信息</view>
+            <view style="display:inline-block;float:right;color:#969696;font-size:28rpx;" @tap.stop="billList">
               点击选择
-              <image src="../../../images/index/arrow-right.png" style="display:inline-block;width:16rpx;height:27rpx;"></image>
+              <image src="../../../images/index/arrow-right.png" style="display:inline-block;width:14rpx;height:24rpx;"></image>
             </view>
           </view>
           <view style="width:100%;position:relative;display:{{long == 1 && billData.type == 0 ? 'block' : 'none'}}">
             <view class="sold-list-head" style="padding-left:48rpx;">
-              <view style="margin-right:10rpx;">公司名称 :</view>
-              <view style="display:inline-block;">
+              <view style="margin-right:10rpx;font-size:28rpx;">公司名称 :</view>
+              <view style="display:inline-block;font-size:28rpx;">
                 <text>{{billData.title}}</text>
               </view>
             </view>
             <view class="sold-list-head" style="" style="padding-left:48rpx;">
-              <view style="margin-right:10rpx;">税号 : </view>
-              <view style="display:inline-block;">
+              <view style="margin-right:10rpx;font-size:28rpx;">税号 : </view>
+              <view style="display:inline-block;font-size:28rpx;">
                 <text>{{billData.taxNumber}}</text>
               </view>
             </view>
-            <view style="position:absolute;color:#969696;font-size:30rpx;right:15rpx;top:15rpx;" @tap="billList">
+            <view style="position:absolute;color:#969696;font-size:30rpx;right:15rpx;top:15rpx;font-size:28rpx;" @tap="billList">
               重新选择
-              <image src="../../../images/index/arrow-right.png" style="display:inline-block;width:16rpx;height:27rpx;"></image>
+              <image src="../../../images/index/arrow-right.png" style="display:inline-block;width:14rpx;height:24rpx;"></image>
             </view>
           </view>
 
           <!--个人发票展示-->
           <view style="width:100%;position:relative;display:{{long != 0 && billData.type == 1 ? 'block' : 'none'}}">
             <view class="sold-list-head" style="padding-left:48rpx;">
-              <view style="margin-right:10rpx;">名称 :</view>
-              <view style="display:inline-block;">
+              <view style="margin-right:10rpx;font-size:28rpx;">名称 :</view>
+              <view style="display:inline-block;font-size:28rpx;">
                 <text>{{billData.title}}</text>
               </view>
             </view>
             <view style="position:absolute;color:#969696;font-size:30rpx;right:15rpx;top:15rpx;" @tap.stop="billList">
               重新选择
-              <image src="../../../images/index/arrow-right.png" style="display:inline-block;width:16rpx;height:27rpx;"></image>
+              <image src="../../../images/index/arrow-right.png" style="display:inline-block;width:14rpx;height:24rpx;"></image>
             </view>
           </view>
         </view>
@@ -507,36 +505,21 @@
       </view>
       <view class="mall-car">
         <view class="budget" @tap.stop="payMoney">立即结算</view>
-        <view class="add-foods">我要加餐</view>
+        <view class="add-foods" @tap.stop="addFood">我要加餐</view>
       </view>
     </view>
-
-    <!--遮罩开始-->
-    <!--<view class="commodity_screen" wx:if="{{showModalStatus}}" catchtouchmove='true'>-->
-      <!--&lt;!&ndash;所有的优惠信息&ndash;&gt;-->
-      <!--<view class="sale" style="color:#333;">-->
-        <!--<view class="activity">本店活动</view>-->
-        <!--<view style="width:100%;height:auto;padding:20rpx;box-sizing:border-box;">-->
-          <!--<view class="view" wx:for = "{{discountData}}" wx:key="index" wx:for-item="i">-->
-            <!--<image src="{{discountData[index].cover}}"></image>-->
-            <!--<view >{{discountData[index].title}}</view>-->
-          <!--</view>-->
-        <!--</view>-->
-        <!--<image class="close" src="../../../images/index/close.png" @tap='hideModal'></image>-->
-      <!--</view>-->
-    <!--</view>-->
   </view>
 </template>
 <script>
   import wepy from 'wepy'
   import api from '../../../api/api'
   import util from '../../../utils/util'
-
   export default class Mymenu extends wepy.page {
     config = {
       navigationBarTitleText: '我的菜单'
     }
     data = {
+      disMoney:0, //优惠的钱数
       discountInfo:'优惠券',
       deliverData:null,
       singlePrice:0,
@@ -562,38 +545,19 @@
       promotionPrice:'',
       prepay_id:'',
       userInfo:null,
-      long:0
+      long:0,
     }
     components = {
     }
     methods = {
+      // 去加餐
+      addFood(){
+        wx.navigateBack({
+          delta:1
+        })
+      },
       switch1Change: function (e){
         console.log('switch1 发生 change 事件，携带值为', e.detail.value)
-      },
-      // 显示遮罩
-      showModal() {
-        // 显示遮罩层
-        var animation = wx.createAnimation({
-          duration: 200,
-          timingFunction: "linear",
-          delay: 0
-        })
-        this.animation = animation
-        animation.translateY(300).step()
-        this.setData({
-          animationData: animation.export(),
-          showModalStatus: true
-        })
-        setTimeout(function () {
-          animation.translateY(0).step()
-          this.setData({
-            animationData: animation.export()
-          })
-        }.bind(this), 200)
-      },
-      //隐藏遮罩
-      hideModal() {
-        this.hide();
       },
       // 选择优惠券
       payWayActive(e){
@@ -603,8 +567,13 @@
         if(this.discount[dataset.index].type == 1){
           this.deliverData.price = this.keepTwoDecimalFull(this.middlePrice - (this.discount[dataset.index].price/100));
           console.log(this.deliverData.price)
+          // 优惠的钱
+          this.disMoney = Number(this.middlePrice) - Number(this.deliverData.price);
         }else if(this.discount[dataset.index].type == 2){
           this.deliverData.price = this.keepTwoDecimalFull(this.middlePrice * (this.discount[dataset.index].discount/10));
+          // 优惠的钱
+          this.disMoney = Number(this.middlePrice) - Number(this.deliverData.price);
+          this.disMoney = this.keepTwoDecimalFull(this.disMoney);
         }
         this.promotionId = this.discount[dataset.index].id;
         this.promotionMsg = this.discount[dataset.index].title;
@@ -698,7 +667,7 @@
     async payMoneyFn(){
       const url = api.apiMall + '/food/orderCommit';
       const data = {
-        goodMessage:this.deliverData.orderGoods,
+        goodMessage:this.deliverData,
         userId:8,
         merchantId:1,
         deskop:this.deliverData.tableNum,
@@ -714,16 +683,20 @@
         salecoupon_message:'',
         salecoupon_price:'',
         is_invoice:1,
-        invoiceId:1,  //必传
         invoice_message:'发票名称',
-        invoice_number:'fdch7843534579'
+        invoice_number:'fdch7843534579',
+        invoice_address:'',
+        invoice_tel:'',
+        invoice_bank:'',
+        invoice_bank_number:''
       }
+      console.log(data);
       await wepy.request({
         url: url,
         method: 'POST',
         data: data,
       }).then((res)=>{
-        // console.log(res.data)
+        console.log(res)
         //将orderId存到全局，供订单完成使用
         wepy.$instance.globalData.orderId = res.data.orderId;
         if(res.data.code == 100){
@@ -742,8 +715,6 @@
             success: function(res) {
               console.log(res.data)
               let jssdk = res.data.jssdk;
-              // 微信支付
-              // const str = util.rnd(1,999999999);
               wx.requestPayment({
                 'appId':jssdk.appId,
                 'timeStamp': jssdk.timestamp,
@@ -768,7 +739,7 @@
             }
           })
         }else{
-          console.log("会员支付成功")
+          console.log("会员支付成功");
           wepy.$instance.globalData.payWay = '会员卡支付'
           var that = this;
           wx.showToast({
@@ -820,26 +791,6 @@
       this.tips = wepy.$instance.globalData.num.tips;
       console.log(this.deliverData);
       this.$apply();
-    }
-    hide(){
-      // 隐藏遮罩层
-      var animation = wx.createAnimation({
-        duration: 200,
-        timingFunction: "linear",
-        delay: 0
-      })
-      this.animation = animation
-      animation.translateY(300).step()
-      this.setData({
-        animationData: animation.export(),
-      })
-      setTimeout(function () {
-        animation.translateY(0).step()
-        this.setData({
-          animationData: animation.export(),
-          showModalStatus: false
-        })
-      }.bind(this), 200)
     }
   }
 </script>

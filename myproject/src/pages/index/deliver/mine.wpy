@@ -60,9 +60,9 @@
 <template>
   <view id = "mine">
     <view class="mine-head-wrap">
-      <image src="https://img.alicdn.com/imgextra/i3/3043293794/TB2jGFccRfM8KJjSZFrXXXSdXXa_!!3043293794-0-beehive-scenes.jpg_180x180xzq90.jpg_.webp" class="profile"></image>
+      <image src="{{userInfo.avatarUrl}}" class="profile"></image>
       <view class="name">
-        <view>张三</view>
+        <view>{{userInfo.nickName}}</view>
         <view class="member">普通会员</view>
       </view>
       <view class="status">会员中心</view>
@@ -77,7 +77,9 @@
   import wepy from 'wepy'
 
   export default class Mine extends wepy.page {
-    data = {}
+    data = {
+      userInfo:null
+    }
     config = {
       navigationBarTitleText: '个人中心',
     }
@@ -89,6 +91,9 @@
           url:'./myOrderList'
         })
       }
+    }
+    onLoad(){
+      this.userInfo = wx.getStorageSync("userInfo");
     }
   }
 </script>
